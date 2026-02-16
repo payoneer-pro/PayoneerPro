@@ -1,267 +1,711 @@
-
 <!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Payeer Pro Ultra Premium</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>PayoneerPro | Nazar Bilous (объединённый + профиль)</title>
+    <!-- Font Awesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Google Fonts Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --accent: #fbbf24;
-            --bg-deep: #0f172a;
-            --bg-light: #1e293b;
-            --text: #f8fafc;
-            --glass: rgba(255, 255, 255, 0.08);
-            --border: rgba(255, 255, 255, 0.15);
-            --neon: rgba(30, 58, 138, 0.5);
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
         }
 
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        body { margin: 0; background: #000; font-family: 'Segoe UI', Roboto, sans-serif; color: var(--text); display: flex; justify-content: center; overflow: hidden; }
+        body {
+            background-color: #f4f7fc;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 12px;
+            overflow: hidden;
+        }
 
-        /* --- КРУТОЙ ФОН --- */
         .app-container {
-            width: 100%; max-width: 414px; height: 100vh;
-            background: #0f172a;
-            position: relative; overflow: hidden;
+            max-width: 414px;
+            width: 100%;
+            height: 90vh;
+            background-color: #ffffff;
+            border-radius: 32px;
+            box-shadow: 0 20px 40px -10px rgba(0, 34, 85, 0.15);
+            position: relative;
+            overflow: hidden;
         }
-        .bg-blob {
-            position: absolute; width: 300px; height: 300px; background: var(--neon);
-            filter: blur(80px); border-radius: 50%; z-index: 0; animation: move 15s infinite alternate;
+
+        /* --- ЭКРАН ЛОГИНА --- */
+        #screenLogin {
+            position: absolute;
+            inset: 0;
+            z-index: 2000;
+            background: #f4f7fc;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 30px;
+            transition: 0.6s;
+            opacity: 1;
+            pointer-events: all;
         }
-        .blob-1 { top: -100px; right: -100px; }
-        .blob-2 { bottom: -100px; left: -100px; background: rgba(124, 58, 237, 0.3); }
-        @keyframes move { from { transform: translate(0, 0); } to { transform: translate(50px, 100px); } }
-
-        /* --- SIDEBAR --- */
-        #sidebar {
-            position: absolute; top: 0; left: -100%; width: 85%; height: 100%;
-            background: rgba(15, 23, 42, 0.95); z-index: 1800; transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            padding: 40px 25px; box-shadow: 20px 0 50px rgba(0,0,0,0.8);
-            display: flex; flex-direction: column; backdrop-filter: blur(20px);
+        .logged-in #screenLogin {
+            opacity: 0;
+            pointer-events: none;
         }
-        .sidebar-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.6); z-index: 1700; display: none; backdrop-filter: blur(4px); }
-        .show-sidebar #sidebar { left: 0; }
-        .show-sidebar .sidebar-overlay { display: block; }
-        .side-link { display: flex; align-items: center; gap: 15px; padding: 18px 0; font-weight: 700; color: white; cursor: pointer; border-bottom: 1px solid var(--glass); }
-
-        /* --- LOADER --- */
-        #loader { position: absolute; inset: 0; background: var(--bg-deep); z-index: 2000; display: none; flex-direction: column; align-items: center; justify-content: center; }
-        .loading-ring { width: 50px; height: 50px; border: 3px solid var(--glass); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.8s infinite linear; }
-        @keyframes spin { to { transform: rotate(360deg); } }
-
-        /* --- LOGIN --- */
-        #screenLogin { position: absolute; inset: 0; z-index: 1000; background: #0f172a; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px; transition: 0.8s; }
-        .login-box { width: 100%; padding: 30px; background: var(--glass); border: 1px solid var(--border); border-radius: 30px; backdrop-filter: blur(20px); position: relative; z-index: 2; }
-        .input-field { width: 100%; padding: 16px; margin-bottom: 15px; border-radius: 15px; border: 1px solid var(--border); background: rgba(0,0,0,0.2); color: white; font-size: 16px; }
-        .logo-main img { width: 85px; height: 85px; border-radius: 50%; border: 3px solid var(--accent); box-shadow: 0 0 25px var(--accent); }
-
-        /* --- DASHBOARD --- */
-        #screenMain { padding: 20px; height: 100%; overflow-y: auto; transition: 0.5s; padding-bottom: 100px; position: relative; z-index: 1; }
-        .top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-        .user-avatar { width: 45px; height: 45px; border-radius: 50%; background: linear-gradient(45deg, #fbbf24, #f59e0b); display: flex; align-items: center; justify-content: center; font-weight: 900; border: 2px solid #fff; cursor: pointer; color: #000; }
-        
-        .card-main { background: var(--glass); border: 1px solid var(--border); border-radius: 28px; padding: 25px; margin-bottom: 20px; text-align: center; backdrop-filter: blur(10px); box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
-        .bal-sum { font-size: 44px; font-weight: 900; margin: 10px 0; color: #fff; text-shadow: 0 2px 10px rgba(0,0,0,0.3); }
-
-        /* ГРАФИК */
-        .chart-flow { height: 40px; display: flex; align-items: flex-end; gap: 3px; margin-top: 15px; justify-content: center; }
-        .chart-bar { width: 4px; background: var(--accent); border-radius: 10px; animation: wave 1.5s infinite ease-in-out; opacity: 0.6; }
-        @keyframes wave { 0%, 100% { height: 10px; } 50% { height: 35px; } }
-
-        .banner-slider { display: flex; gap: 15px; overflow-x: auto; padding-bottom: 20px; scroll-snap-type: x mandatory; }
-        .banner-slider::-webkit-scrollbar { display: none; }
-        .b-item { min-width: 260px; height: 120px; border-radius: 24px; padding: 20px; scroll-snap-align: start; display: flex; flex-direction: column; justify-content: center; box-shadow: 0 10px 20px rgba(0,0,0,0.3); cursor: pointer; backdrop-filter: blur(5px); }
-
-        .services-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-bottom: 25px; }
-        .service-item { display: flex; flex-direction: column; align-items: center; gap: 8px; cursor: pointer; }
-        .s-icon { width: 55px; height: 55px; background: var(--glass); border-radius: 20px; display: flex; align-items: center; justify-content: center; font-size: 22px; border: 1px solid var(--border); backdrop-filter: blur(5px); transition: 0.3s; }
-        .s-icon:hover { background: var(--accent); color: #000; transform: translateY(-3px); }
-
-        .action-list-item { background: rgba(255,255,255,0.95); border-radius: 22px; padding: 20px; display: flex; align-items: center; justify-content: space-between; color: #0f172a; font-weight: 800; margin-bottom: 12px; cursor: pointer; backdrop-filter: blur(5px); }
-        .transfer-widget { background: #fff; border-radius: 28px; padding: 25px; color: #0f172a; box-shadow: 0 15px 40px rgba(0,0,0,0.4); }
-        .input-row { border-bottom: 2px solid #f1f5f9; padding: 10px 0; display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
-        .input-row input { border: none; font-size: 34px; font-weight: 900; width: 60%; color: #000; outline: none; }
-
-        .btn-action { background: var(--accent); color: #000; border: none; width: 100%; padding: 22px; border-radius: 22px; font-size: 18px; font-weight: 900; cursor: pointer; box-shadow: 0 8px 20px rgba(251, 191, 36, 0.4); transition: 0.3s; }
+        .login-box {
+            width: 100%;
+            padding: 30px;
+            background: white;
+            border-radius: 28px;
+            box-shadow: 0 10px 30px rgba(0,34,85,0.1);
+        }
+        .input-field {
+            width: 100%;
+            padding: 16px;
+            margin-bottom: 15px;
+            border-radius: 16px;
+            border: 1px solid #eef2f6;
+            font-size: 16px;
+            outline: none;
+            transition: 0.2s;
+        }
+        .input-field:focus {
+            border-color: #2a5a9c;
+        }
+        .btn-action {
+            background: #0b1e3c;
+            color: white;
+            border: none;
+            width: 100%;
+            padding: 18px;
+            border-radius: 20px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.3s;
+            box-shadow: 0 8px 20px rgba(11,30,60,0.2);
+        }
         .btn-action:active { transform: scale(0.97); }
 
-        .promo-banner { background: linear-gradient(90deg, #ff4b2b, #ff416c); border-radius: 22px; padding: 20px; margin-top: 25px; display: flex; align-items: center; gap: 15px; font-size: 13px; color: white; box-shadow: 0 10px 25px rgba(255, 75, 43, 0.4); }
+        /* --- ОСНОВНОЙ ЭКРАН --- */
+        #screenMain {
+            height: 100%;
+            overflow-y: auto;
+            padding: 20px;
+            padding-bottom: 30px;
+            background: white;
+            transition: 0.3s;
+        }
 
-        /* --- MODALS --- */
-        .modal-full { position: absolute; inset: 0; top: 100%; background: #f8fafc; z-index: 1500; transition: 0.5s cubic-bezier(0.4, 0, 0.2, 1); color: #000; padding: 20px 25px; overflow-y: auto; }
+        /* Шапка */
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .user-avatar {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #1b3b6f, #2a5a9c);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+            color: white;
+            border: 2px solid white;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .logo-main img {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #2a5a9c;
+        }
+        .chat-icon {
+            font-size: 24px;
+            color: #1b3b6f;
+            cursor: pointer;
+        }
+
+        /* Карточка баланса */
+        .balance-card {
+            background: linear-gradient(145deg, #0b1e3c, #1a3b62);
+            border-radius: 24px;
+            padding: 24px;
+            color: white;
+            margin-bottom: 20px;
+        }
+        .balance-info h3 {
+            font-weight: 400;
+            font-size: 14px;
+            opacity: 0.8;
+        }
+        .balance-amount {
+            display: flex;
+            align-items: baseline;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        .main-currency {
+            font-size: 42px;
+            font-weight: 700;
+        }
+        .other-currencies {
+            font-size: 16px;
+            opacity: 0.7;
+        }
+
+        /* Баннеры (слайдер) */
+        .banner-slider {
+            display: flex;
+            gap: 15px;
+            overflow-x: auto;
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+            scroll-snap-type: x mandatory;
+        }
+        .banner-slider::-webkit-scrollbar { display: none; }
+        .b-item {
+            min-width: 240px;
+            height: 100px;
+            border-radius: 20px;
+            padding: 16px;
+            scroll-snap-align: start;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            cursor: pointer;
+            color: white;
+        }
+        .b-item b { font-size: 16px; }
+        .b-item span { font-size: 12px; opacity: 0.9; }
+
+        /* Сетка услуг (быстрые действия) */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin-bottom: 25px;
+        }
+        .service-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+        }
+        .s-icon {
+            width: 55px;
+            height: 55px;
+            background: #f0f4fe;
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: #1b3b6f;
+            transition: 0.2s;
+        }
+        .service-item:hover .s-icon {
+            background: #e1e9f5;
+        }
+        .service-item span {
+            font-size: 12px;
+            font-weight: 500;
+            color: #0b1e3c;
+        }
+
+        /* Кнопка-ссылка на историю */
+        .action-list-item {
+            background: #f8faff;
+            border-radius: 20px;
+            padding: 18px 22px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-weight: 700;
+            color: #0b1e3c;
+            margin-bottom: 20px;
+            cursor: pointer;
+            border: 1px solid #e6ecf4;
+        }
+
+        /* Виджет перевода */
+        .transfer-widget {
+            background: #f8faff;
+            border-radius: 24px;
+            padding: 22px;
+            margin-bottom: 20px;
+            border: 1px solid #e6ecf4;
+        }
+        .input-row {
+            border-bottom: 2px solid #e6ecf4;
+            padding: 10px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        .input-row input {
+            border: none;
+            background: transparent;
+            font-size: 28px;
+            font-weight: 700;
+            width: 60%;
+            outline: none;
+            color: #0b1e3c;
+        }
+        .input-row label {
+            font-size: 10px;
+            font-weight: 700;
+            color: #5f6c84;
+        }
+
+        /* Список транзакций */
+        .transactions-list {
+            background: white;
+            border-radius: 20px;
+            border: 1px solid #eef2f6;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+        .transaction-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 20px;
+            border-bottom: 1px solid #f0f4fa;
+            cursor: pointer;
+        }
+        .transaction-item:last-child { border-bottom: none; }
+        .trans-left { display: flex; align-items: center; gap: 16px; }
+        .trans-icon {
+            width: 44px; height: 44px;
+            background: #f0f7ff;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #1b3b6f;
+            font-size: 20px;
+        }
+        .trans-details h4 { font-weight: 600; font-size: 15px; color: #0b1e3c; margin-bottom: 4px; }
+        .trans-meta { display: flex; gap: 12px; color: #7a88a3; font-size: 12px; }
+        .trans-amount { font-weight: 700; font-size: 17px; }
+        .positive { color: #1d8a5c; }
+        .negative { color: #c24242; }
+        .status-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 30px;
+            font-size: 10px;
+            font-weight: 800;
+            background: #fee2e2;
+            color: #b91c1c;
+        }
+        .status-badge.success { background: #dcfce7; color: #166534; }
+
+        /* Футер */
+        .footer-links {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 0;
+            color: #8a98b2;
+            font-size: 12px;
+            border-top: 1px solid #eef2f6;
+        }
+        .footer-links .links { display: flex; gap: 20px; }
+        .footer-links a { color: #5f6c84; text-decoration: none; cursor: pointer; }
+
+        /* --- Боковое меню (sidebar) --- */
+        .sidebar-overlay {
+            position: absolute; inset: 0; background: rgba(0,0,0,0.4); z-index: 1800; display: none;
+        }
+        #sidebar {
+            position: absolute; top: 0; left: -85%; width: 85%; height: 100%;
+            background: white; z-index: 1900; transition: 0.3s;
+            padding: 40px 25px; box-shadow: 20px 0 50px rgba(0,0,0,0.2);
+            display: flex; flex-direction: column;
+        }
+        .show-sidebar #sidebar { left: 0; }
+        .show-sidebar .sidebar-overlay { display: block; }
+        .side-link {
+            display: flex; align-items: center; gap: 15px;
+            padding: 18px 0; font-weight: 600; color: #0b1e3c;
+            cursor: pointer; border-bottom: 1px solid #eef2f6;
+        }
+
+        /* --- МОДАЛЬНЫЕ ОКНА (общие) --- */
+        .modal-full {
+            position: absolute; inset: 0; top: 100%; background: white; z-index: 1500;
+            transition: 0.3s; color: #0b1e3c; padding: 20px 25px; overflow-y: auto;
+        }
         .modal-full.active { top: 0; }
-        .dark-modal { background: #0f172a; color: white; }
-        .nav-header { display: flex; justify-content: space-between; align-items: center; padding: 15px 0; margin-bottom: 20px; }
-        .nav-btn { width: 35px; height: 35px; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.05); border-radius: 50%; cursor: pointer; font-size: 18px; }
+        .nav-header {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 15px 0; margin-bottom: 20px;
+        }
+        .nav-btn {
+            width: 35px; height: 35px; display: flex; align-items: center; justify-content: center;
+            background: #f0f4fe; border-radius: 50%; cursor: pointer; font-size: 18px;
+        }
 
-        .profile-card { background: linear-gradient(135deg, #1e293b, #0f172a); border-radius: 25px; padding: 25px; border: 1px solid rgba(255,255,255,0.1); }
-        .profile-info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 20px; }
-        .info-item label { font-size: 10px; color: #94a3b8; font-weight: 700; text-transform: uppercase; display: block; }
-        .info-item span { font-size: 14px; font-weight: 600; color: #fff; }
+        /* --- Стили для профиля (улучшенные) --- */
+        .profile-avatar-large {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #1b3b6f, #2a5a9c);
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+            font-size: 36px;
+            color: white;
+            border: 3px solid white;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+            margin: 0 auto 15px;
+        }
+        .profile-name-large {
+            font-size: 24px;
+            font-weight: 800;
+            text-align: center;
+            color: #0b1e3c;
+        }
+        .profile-badge {
+            text-align: center;
+            background: #e6f7e6;
+            color: #1d8a5c;
+            padding: 6px 16px;
+            border-radius: 30px;
+            display: inline-block;
+            font-size: 14px;
+            font-weight: 600;
+            margin: 10px auto 20px;
+            width: fit-content;
+        }
+        .profile-badge i {
+            margin-right: 6px;
+            color: #1d8a5c;
+        }
+        .profile-section {
+            background: #f8faff;
+            border-radius: 24px;
+            padding: 22px;
+            margin-bottom: 20px;
+            border: 1px solid #eef2f6;
+        }
+        .profile-section h4 {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 18px;
+            color: #0b1e3c;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .profile-section h4 i {
+            color: #2a5a9c;
+            font-size: 18px;
+        }
+        .profile-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            padding: 12px 0;
+            border-bottom: 1px dashed #dce3ec;
+        }
+        .profile-row:last-child {
+            border-bottom: none;
+        }
+        .profile-row .label {
+            font-size: 14px;
+            color: #64748b;
+            font-weight: 500;
+        }
+        .profile-row .value {
+            font-size: 15px;
+            font-weight: 600;
+            color: #0b1e3c;
+            text-align: right;
+            max-width: 60%;
+        }
+        .profile-verified-icon {
+            color: #22c55e;
+            margin-left: 5px;
+        }
 
-        /* --- CHAT --- */
-        #screenChat { position: absolute; inset: 0; left: 100%; background: #f1f5f9; z-index: 1200; transition: 0.4s; display: flex; flex-direction: column; color: #000; }
-        .chat-head { background: #1e3a8a; color: #fff; padding: 20px; display: flex; justify-content: space-between; align-items: center; }
-        .bubble { padding: 14px 18px; border-radius: 22px; max-width: 80%; font-size: 14px; margin-bottom: 10px; }
-        .bubble.bot { background: #fff; align-self: flex-start; border-bottom-left-radius: 4px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
-        .bubble.user { background: #1e3a8a; color: #fff; align-self: flex-end; border-bottom-right-radius: 4px; }
-
-        /* --- CONFIRM & PASS --- */
-        #screenConfirm { position: absolute; inset: 0; left: 100%; background: #0f172a; z-index: 500; padding: 30px; transition: 0.4s; color: white; }
-        .summary-item { display: flex; justify-content: space-between; margin-bottom: 15px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px; }
-        #screenPass { position: absolute; inset: 0; left: 100%; background: #0f172a; z-index: 600; padding: 50px 30px; transition: 0.4s; text-align: center; color: white; }
-        .dot { width: 15px; height: 15px; border-radius: 50%; background: var(--glass); border: 1px solid var(--border); margin: 0 7px; }
-        .dot.filled { background: var(--accent); box-shadow: 0 0 10px var(--accent); }
-        #screenSuccess { position: absolute; inset: 0; left: 100%; background: #fff; z-index: 800; text-align: center; padding: 60px 30px; transition: 0.5s; color: #000; }
-        
-        #screenHistory { position: absolute; inset: 0; left: 100%; background: #f8fafc; z-index: 700; padding: 20px 25px; transition: 0.4s; color: #000; overflow-y: auto; }
-        .hist-card { background: #fff; border-radius: 20px; padding: 18px; margin-bottom: 12px; border-left: 6px solid var(--accent); box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
-        .hist-card.declined { border-left-color: #ef4444; background: #fff1f0; }
-        .hist-card.success { border-left-color: #10b981; background: #f0fdf4; }
-        .hist-card small { color: #64748b; font-size: 11px; }
-        .hist-card .card-number { font-family: monospace; font-weight: 600; color: #0f172a; }
-        .hist-card .recipient { font-size: 13px; color: #334155; }
-        .hist-card .commission { font-size: 11px; color: #94a3b8; }
-        .hist-card .status-badge { display: inline-block; padding: 4px 10px; border-radius: 30px; font-size: 10px; font-weight: 800; background: #fee2e2; color: #b91c1c; }
-        .hist-card .status-badge.success { background: #dcfce7; color: #166534; }
-
-        /* ПЕРЕХОДЫ */
-        .logged-in #screenLogin { transform: translateY(-100%); }
+        /* Чат */
+        #screenChat {
+            position: absolute; inset: 0; left: 100%; background: #f8fafc; z-index: 1200;
+            transition: 0.3s; display: flex; flex-direction: column; color: #0b1e3c;
+        }
         .show-chat #screenChat { left: 0; }
-        .show-conf #screenMain { transform: translateX(-100%); }
+        .chat-head { background: #1b3b6f; color: white; padding: 20px; display: flex; justify-content: space-between; }
+        .chat-body { flex: 1; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; }
+        .bubble {
+            padding: 14px 18px; border-radius: 22px; max-width: 80%; font-size: 14px; margin-bottom: 10px;
+        }
+        .bubble.bot { background: white; align-self: flex-start; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+        .bubble.user { background: #1b3b6f; color: white; align-self: flex-end; }
+        .contacts-info {
+            background: #eef2f6; border-radius: 16px; padding: 15px; margin-bottom: 15px; font-size: 13px;
+        }
+
+        /* Экран подтверждения */
+        #screenConfirm, #screenPass, #screenSuccess, #screenHistory {
+            position: absolute; inset: 0; left: 100%; background: white; z-index: 500;
+            padding: 30px; transition: 0.3s; color: #0b1e3c; overflow-y: auto;
+        }
         .show-conf #screenConfirm { left: 0; }
         .show-pass-now #screenPass { left: 0; }
         .show-s3 #screenSuccess { left: 0; }
         .show-hist #screenHistory { left: 0; }
+        .summary-item { display: flex; justify-content: space-between; margin-bottom: 15px; border-bottom: 1px solid #eef2f6; padding-bottom: 10px; }
+        .dot { width: 15px; height: 15px; border-radius: 50%; background: #eef2f6; margin: 0 7px; }
+        .dot.filled { background: #2a5a9c; }
+
+        /* История */
+        .hist-card {
+            background: #f8faff; border-radius: 18px; padding: 18px; margin-bottom: 12px;
+            border-left: 6px solid #fbbf24;
+        }
+        .hist-card.declined { border-left-color: #ef4444; }
+        .hist-card.success { border-left-color: #10b981; }
+        .card-number { font-family: monospace; font-weight: 600; }
+        .recipient { font-size: 13px; color: #334155; }
+
+        /* Загрузчик */
+        #loader {
+            position: absolute; inset: 0; background: rgba(255,255,255,0.9); z-index: 2000;
+            display: none; flex-direction: column; align-items: center; justify-content: center;
+        }
+        .loading-ring {
+            width: 50px; height: 50px; border: 3px solid #eef2f6; border-top-color: #2a5a9c;
+            border-radius: 50%; animation: spin 0.8s infinite linear;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
     </style>
 </head>
 <body>
-
 <div class="app-container" id="app">
-    <div class="bg-blob blob-1"></div>
-    <div class="bg-blob blob-2"></div>
+    <!-- Загрузчик -->
+    <div id="loader"><div class="loading-ring"></div><div style="margin-top:20px;">Обработка...</div></div>
 
-    <div id="loader"><div class="loading-ring"></div><div style="margin-top:20px; font-weight:800; color:white;">ОБРАБОТКА...</div></div>
-
+    <!-- Боковое меню -->
     <div class="sidebar-overlay" onclick="toggleSidebar()"></div>
     <div id="sidebar">
         <div style="text-align:center; margin-bottom:30px;">
-            <div class="user-avatar" style="width:70px; height:70px; margin:0 auto 15px; font-size:24px;">ТС</div>
+            <div class="user-avatar" style="width:70px; height:70px; margin:0 auto 15px; font-size:24px;">NB</div>
             <div style="font-weight:900; font-size:18px;">Nazar Bilous</div>
-            <div style="color:var(--accent); font-size:11px; font-weight:800; margin-top:5px;">STATUS: VIP OWNER</div>
+            <div style="color:#2a5a9c; font-size:12px; margin-top:5px;">STATUS: VIP OWNER</div>
         </div>
         <div class="side-link" onclick="toggleSidebar(); showInfo('profile');">👤 Мой Профиль</div>
         <div class="side-link" onclick="toggleSidebar(); showInfo('accounts');">💳 Реквизиты</div>
         <div class="side-link" onclick="toggleSidebar(); withLoader(openHist);">📊 Статистика</div>
         <div class="side-link" onclick="toggleSidebar(); showInfo('safety');">🔐 Безопасность</div>
         <div class="side-link" onclick="toggleSidebar(); openChat();">💬 Поддержка</div>
-        <div style="margin-top:auto;"><button class="btn-action" style="background:#ef4444; color:white; padding:15px;" onclick="logout()">ВЫЙТИ</button></div>
+        <div style="margin-top:auto;"><button class="btn-action" style="background:#ef4444;" onclick="logout()">ВЫЙТИ</button></div>
     </div>
 
+    <!-- Экран логина -->
     <div id="screenLogin">
-        <div class="logo-main" style="text-align:center; margin-bottom:20px;"><img src="https://i.postimg.cc/nLFzR5TR/photo-output.jpg"></div>
-        <h1 style="font-weight:900; color:white;">Payeer Pro</h1>
+        <div class="logo-main" style="text-align:center; margin-bottom:20px;">
+            <img src="https://i.postimg.cc/nLFzR5TR/photo-output.jpg" style="width:85px; height:85px; border-radius:50%; border:3px solid #2a5a9c;">
+        </div>
+        <h1 style="font-weight:900; color:#0b1e3c; margin-bottom:20px;">PayoneerPro</h1>
         <div class="login-box">
-            <div id="loginErr" style="color:#ff4d4d; font-size:13px; text-align:center; margin-bottom:10px; display:none;">Ошибка данных</div>
-            <input type="text" id="userInput" class="input-field" placeholder="Логин (Email)">
-            <input type="password" id="passInput" class="input-field" placeholder="Пароль">
+            <div id="loginErr" style="color:#ff4d4d; font-size:13px; text-align:center; margin-bottom:10px; display:none;">Неверный логин или пароль</div>
+            <input type="text" id="userInput" class="input-field" placeholder="Логин (Email)" value="tem4chik08@gmail.com">
+            <input type="password" id="passInput" class="input-field" placeholder="Пароль" value="Nazarka1307">
             <div style="display:flex; align-items:center; gap:10px; margin-bottom:20px;">
-                <input type="checkbox" id="saveMe"> <label for="saveMe" style="font-size:13px; color:rgba(255,255,255,0.6);">Запомнить меня</label>
+                <input type="checkbox" id="saveMe"> <label for="saveMe" style="font-size:13px; color:#5f6c84;">Запомнить меня</label>
             </div>
             <button class="btn-action" onclick="withLoader(doLogin)">ВОЙТИ</button>
         </div>
     </div>
 
+    <!-- Основной экран (дашборд) -->
     <div id="screenMain">
         <div class="top-bar">
-            <div class="user-avatar" onclick="toggleSidebar()">ТС</div>
-            <div class="logo-main" style="margin:0;"><img src="https://i.postimg.cc/nLFzR5TR/photo-output.jpg" style="width:50px; height:50px;"></div>
-            <div onclick="openChat()" style="font-size:24px; cursor:pointer;">💬</div>
+            <div class="user-avatar" onclick="toggleSidebar()">NB</div>
+            <div class="logo-main"><img src="https://i.postimg.cc/nLFzR5TR/photo-output.jpg"></div>
+            <div class="chat-icon" onclick="openChat()">💬</div>
         </div>
 
-        <div class="card-main">
-            <div style="font-size:12px; font-weight:700; opacity:0.5; letter-spacing:2px;">БАЛАНС СЧЕТА</div>
-            <div class="bal-sum" id="valBal">0.68 USD</div>
-            <div class="chart-flow">
-                <div class="chart-bar" style="animation-delay: 0.1s;"></div>
-                <div class="chart-bar" style="animation-delay: 0.3s;"></div>
-                <div class="chart-bar" style="animation-delay: 0.5s;"></div>
-                <div class="chart-bar" style="animation-delay: 0.2s;"></div>
-                <div class="chart-bar" style="animation-delay: 0.4s;"></div>
-                <div class="chart-bar" style="animation-delay: 0.6s;"></div>
-                <div class="chart-bar" style="animation-delay: 0.1s;"></div>
-                <div class="chart-bar" style="animation-delay: 0.5s;"></div>
+        <!-- Карточка баланса -->
+        <div class="balance-card">
+            <div class="balance-info">
+                <h3>ОСНОВНОЙ БАЛАНС (USD)</h3>
+                <div class="balance-amount">
+                    <span class="main-currency" id="valBal">0.68 USD</span>
+                    <span class="other-currencies">≈ 28.35 UAH</span>
+                </div>
             </div>
         </div>
 
+        <!-- Баннеры (акции) -->
         <div class="banner-slider">
             <div class="b-item" style="background: linear-gradient(135deg, #6366f1, #a855f7);" onclick="showInfo('promo_cashback')">
                 <b>Кешбэк 5%</b>
-                <span>На все переводы внутри сети Payeer24/7.</span>
+                <span>На все переводы внутри сети</span>
             </div>
             <div class="b-item" style="background: linear-gradient(135deg, #10b981, #3b82f6);" onclick="showInfo('promo_friend')">
                 <b>Приведи друга</b>
-                <span>Получай $10 за каждого пользователя.</span>
+                <span>Получай $10 за каждого</span>
             </div>
             <div class="b-item" style="background: linear-gradient(135deg, #f59e0b, #ef4444);" onclick="showInfo('promo_vip')">
                 <b>VIP Статус</b>
-                <span>Лимиты до $100,000 для Nazar Bilous.</span>
+                <span>Лимиты до $100,000</span>
             </div>
         </div>
 
+        <!-- Сетка услуг (быстрые действия) -->
         <div class="services-grid">
-            <div class="service-item" onclick="showInfo('svyaz')"><div class="s-icon">📱</div><span>Связь</span></div>
-            <div class="service-item" onclick="showInfo('inet')"><div class="s-icon">🌐</div><span>Инет</span></div>
-            <div class="service-item" onclick="showInfo('zhkh')"><div class="s-icon">⚡</div><span>ЖКХ</span></div>
-            <div class="service-item" onclick="showInfo('games')"><div class="s-icon">🎮</div><span>Игры</span></div>
+            <div class="service-item" onclick="showInfo('svyaz')">
+                <div class="s-icon">📱</div>
+                <span>Связь</span>
+            </div>
+            <div class="service-item" onclick="showInfo('inet')">
+                <div class="s-icon">🌐</div>
+                <span>Интернет</span>
+            </div>
+            <div class="service-item" onclick="showInfo('zhkh')">
+                <div class="s-icon">⚡</div>
+                <span>ЖКХ</span>
+            </div>
+            <div class="service-item" onclick="showInfo('games')">
+                <div class="s-icon">🎮</div>
+                <span>Игры</span>
+            </div>
         </div>
 
+        <!-- Кнопка перехода к истории -->
         <div class="action-list-item" onclick="withLoader(openHist)">
-            <div style="display:flex; align-items:center; gap:15px;">📊 <span>История платежей</span></div><span>❯</span>
+            <div style="display:flex; align-items:center; gap:15px;">📊 <span>История платежей</span></div>
+            <span>❯</span>
         </div>
 
+        <!-- Виджет перевода -->
         <div class="transfer-widget">
             <div class="input-row">
-                <div><label style="font-size:10px; font-weight:900; color:#94a3b8;">ОТПРАВИТЬ</label><br><input type="number" id="sendIn" value="0.68"></div>
+                <div><label>ОТПРАВИТЬ</label><br><input type="number" id="sendIn" value="0.68"></div>
                 <div style="font-weight:900;">USD ❯</div>
             </div>
             <div class="input-row">
-                <div><label style="font-size:10px; font-weight:900; color:#94a3b8;">ПОЛУЧИТЬ</label><br><input type="text" id="getOut" value="28.35" readonly></div>
-                <div style="font-weight:900;">UAH ❯</div>
+                <div><label>ПОЛУЧИТЬ</label><br><input type="text" id="getOut" value="28.35" readonly></div>
+                <div style="font-weight:900;">UAH</div>
             </div>
             <button class="btn-action" onclick="withLoader(toConfirm)">ПЕРЕВЕСТИ</button>
         </div>
 
-        <div class="promo-banner">
-            <div style="font-size: 32px;">🏛️</div>
-            <div><b>Прямые переводы на карты Украины.</b><br>Зачисление средств происходит до 6 часов.</div>
+        <!-- Последние операции (история) -->
+        <div style="margin-bottom: 10px; font-weight:600;">Последние операции</div>
+        <div class="transactions-list" id="historyShort">
+            <!-- будет заполнено JS -->
         </div>
-    </div>
 
-    <div id="modalProfile" class="modal-full dark-modal">
-        <div class="nav-header"><div class="nav-btn" onclick="closeModal('profile')">←</div><b>МОЙ ПРОФИЛЬ</b><div class="nav-btn" onclick="resetAll()">✕</div></div>
-        <div class="profile-card">
-            <div style="display:flex; align-items:center; gap:20px; margin-bottom:25px;">
-                <div style="width:60px; height:60px; background:var(--accent); border-radius:15px; color:black; display:flex; align-items:center; justify-content:center; font-weight:900; font-size:24px;">NB</div>
-                <div><div style="font-size:20px; font-weight:900;">Nazar Bilous</div><div style="color:var(--accent); font-size:10px; font-weight:800;">VERIFIED ACCOUNT</div></div>
-            </div>
-            <div class="profile-info-grid">
-                <div class="info-item"><label>Дата рождения</label><span>09.06.1992</span></div>
-                <div class="info-item"><label>Паспорт (ID)</label><span>005711076</span></div>
-                <div class="info-item"><label>Выдан</label><span>08.02.2021</span></div>
-                <div class="info-item"><label>Годен до</label><span>08.02.2031</span></div>
-                <div class="info-item" style="grid-column: span 2;"><label>Адрес</label><span>Dnipropetrovsk region, Zheltye Vody, street 8 Marta, 50-14</span></div>
-                <div class="info-item"><label>Телефон</label><span>+380637083361</span></div>
-                <div class="info-item"><label>Индекс</label><span>52200</span></div>
+        <!-- Футер -->
+        <div class="footer-links">
+            <div class="copyright">© 2026 PayoneerPro — Nazar Bilous</div>
+            <div class="links">
+                <a href="#" onclick="openChat()">Помощь</a>
+                <a href="#" onclick="showInfo('safety')">Безопасность</a>
+                <a href="#" onclick="showInfo('accounts')">Условия</a>
             </div>
         </div>
     </div>
 
+    <!-- ========== УЛУЧШЕННЫЙ МОДАЛЬНЫЙ ПРОФИЛЬ ========== -->
+    <div id="modalProfile" class="modal-full">
+        <div class="nav-header">
+            <div class="nav-btn" onclick="closeModal('profile')">←</div>
+            <b>МОЙ ПРОФИЛЬ</b>
+            <div class="nav-btn" onclick="resetAll()">✕</div>
+        </div>
+
+        <!-- Аватар и имя -->
+        <div style="text-align: center;">
+            <div class="profile-avatar-large">NB</div>
+            <div class="profile-name-large">Nazar Bilous</div>
+            <div class="profile-badge"><i class="fas fa-check-circle"></i> VERIFIED ACCOUNT</div>
+        </div>
+
+        <!-- Личные данные -->
+        <div class="profile-section">
+            <h4><i class="fas fa-user"></i> Личные данные</h4>
+            <div class="profile-row">
+                <span class="label">Дата рождения</span>
+                <span class="value">09.06.1992</span>
+            </div>
+            <div class="profile-row">
+                <span class="label">Паспорт (ID)</span>
+                <span class="value">005711076</span>
+            </div>
+            <div class="profile-row">
+                <span class="label">Выдан</span>
+                <span class="value">08.02.2021</span>
+            </div>
+            <div class="profile-row">
+                <span class="label">Годен до</span>
+                <span class="value">08.02.2031</span>
+            </div>
+        </div>
+
+        <!-- Контакты и адрес -->
+        <div class="profile-section">
+            <h4><i class="fas fa-map-marker-alt"></i> Адрес и контакты</h4>
+            <div class="profile-row">
+                <span class="label">Адрес</span>
+                <span class="value">Днепропетровская обл., Жёлтые Воды, ул. 8 Марта, 50-14</span>
+            </div>
+            <div class="profile-row">
+                <span class="label">Телефон</span>
+                <span class="value">+380637083361</span>
+            </div>
+            <div class="profile-row">
+                <span class="label">Индекс</span>
+                <span class="value">52200</span>
+            </div>
+            <div class="profile-row">
+                <span class="label">Email</span>
+                <span class="value">tem4chik08@gmail.com</span>
+            </div>
+        </div>
+
+        <!-- Статус и верификация -->
+        <div class="profile-section">
+            <h4><i class="fas fa-shield-alt"></i> Статус</h4>
+            <div class="profile-row">
+                <span class="label">Уровень</span>
+                <span class="value">VIP OWNER <i class="fas fa-crown" style="color:#fbbf24;"></i></span>
+            </div>
+            <div class="profile-row">
+                <span class="label">Верификация</span>
+                <span class="value"><i class="fas fa-check-circle profile-verified-icon"></i> Подтверждено</span>
+            </div>
+            <div class="profile-row">
+                <span class="label">Лимиты</span>
+                <span class="value">$100,000 / день</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Остальные модальные окна (услуги, акции) (без изменений, но оставляем) -->
     <div id="modalSvyaz" class="modal-full">
         <div class="nav-header"><div class="nav-btn" onclick="closeModal('svyaz')">←</div><b>СВЯЗЬ</b><div class="nav-btn" onclick="resetAll()">✕</div></div>
-        <div style="background:#fff; padding:20px; border-radius:20px; margin:20px 0;">
-            <input type="text" value="+380" style="width:100%; border:none; font-size:20px; font-weight:bold; outline:none;">
+        <div style="background:#f8faff; padding:20px; border-radius:20px; margin:20px 0;">
+            <input type="text" value="+380" style="width:100%; border:none; background:transparent; font-size:20px; font-weight:bold; outline:none;">
         </div>
         <input type="number" value="10" id="svyazAmt" style="width:100%; border:none; background:transparent; font-size:30px; font-weight:bold; text-align:center;">
         <button class="btn-action" onclick="startServicePayment('svyaz', 'Мобильная связь')">ПРОДОЛЖИТЬ</button>
@@ -269,25 +713,26 @@
 
     <div id="modalInet" class="modal-full">
         <div class="nav-header"><div class="nav-btn" onclick="closeModal('inet')">←</div><b>ИНТЕРНЕТ</b><div class="nav-btn" onclick="resetAll()">✕</div></div>
-        <input type="text" placeholder="Номер договора" style="width:100%; border:1px solid #ddd; padding:15px; border-radius:15px; margin-bottom:15px;">
+        <input type="text" placeholder="Номер договора" style="width:100%; border:1px solid #eef2f6; padding:15px; border-radius:15px; margin-bottom:15px;">
         <input type="number" value="15" id="inetAmt" style="width:100%; border:none; background:transparent; font-size:30px; font-weight:bold; text-align:center;">
         <button class="btn-action" onclick="startServicePayment('inet', 'Интернет')">ПРОДОЛЖИТЬ</button>
     </div>
 
     <div id="modalZhkh" class="modal-full">
         <div class="nav-header"><div class="nav-btn" onclick="closeModal('zhkh')">←</div><b>ЖКХ</b><div class="nav-btn" onclick="resetAll()">✕</div></div>
-        <input type="text" placeholder="Лицевой счет" style="width:100%; border:1px solid #ddd; padding:15px; border-radius:15px; margin-bottom:15px;">
+        <input type="text" placeholder="Лицевой счет" style="width:100%; border:1px solid #eef2f6; padding:15px; border-radius:15px; margin-bottom:15px;">
         <input type="number" value="25" id="zhkhAmt" style="width:100%; border:none; background:transparent; font-size:30px; font-weight:bold; text-align:center;">
         <button class="btn-action" onclick="startServicePayment('zhkh', 'ЖКХ')">ПРОДОЛЖИТЬ</button>
     </div>
 
     <div id="modalGames" class="modal-full">
         <div class="nav-header"><div class="nav-btn" onclick="closeModal('games')">←</div><b>ИГРЫ</b><div class="nav-btn" onclick="resetAll()">✕</div></div>
-        <input type="text" placeholder="ID игрока" style="width:100%; border:1px solid #ddd; padding:15px; border-radius:15px; margin-bottom:15px;">
+        <input type="text" placeholder="ID игрока" style="width:100%; border:1px solid #eef2f6; padding:15px; border-radius:15px; margin-bottom:15px;">
         <input type="number" value="50" id="gamesAmt" style="width:100%; border:none; background:transparent; font-size:30px; font-weight:bold; text-align:center;">
         <button class="btn-action" onclick="startServicePayment('games', 'Игры')">ПРОДОЛЖИТЬ</button>
     </div>
 
+    <!-- Акции -->
     <div id="modalPromo_cashback" class="modal-full">
         <div class="nav-header"><div class="nav-btn" onclick="closeModal('promo_cashback')">←</div><b>АКЦИЯ</b><div class="nav-btn" onclick="resetAll()">✕</div></div>
         <div style="text-align:center; padding:20px;"><div style="font-size:60px;">💰</div><h2>Кешбэк 5%</h2><p>Возвращаем 5% с каждого платежа!</p><button class="btn-action" onclick="closeModal('promo_cashback')">ПОНЯТНО</button></div>
@@ -301,14 +746,15 @@
         <div style="text-align:center; padding:20px;"><div style="font-size:60px;">👑</div><h2>VIP OWNER</h2><p>Безлимитные лимиты для Nazar Bilous.</p><button class="btn-action" onclick="closeModal('promo_vip')">ОТЛИЧНО</button></div>
     </div>
 
+    <!-- Реквизиты, безопасность -->
     <div id="modalAccounts" class="modal-full">
         <div class="nav-header"><div class="nav-btn" onclick="closeModal('accounts')">←</div><b>МОИ СЧЕТА</b><div class="nav-btn" onclick="resetAll()">✕</div></div>
-        <div style="background:#f1f5f9; padding:25px; border-radius:24px; margin-bottom:15px; border-left: 5px solid #1e3a8a;">
-            <label style="font-size:11px; color:#94a3b8; font-weight:800;">SAVINGS ACCOUNT</label>
+        <div style="background:#f8faff; padding:25px; border-radius:24px; margin-bottom:15px; border-left:5px solid #1e3a8a;">
+            <label style="font-size:11px; color:#94a3b8;">SAVINGS ACCOUNT</label>
             <div style="font-size:24px; font-weight:900;" class="dyn-bal">0.68 USD</div>
         </div>
-        <div style="background:#0f172a; padding:25px; border-radius:24px; color:white;">
-            <div style="display:flex; justify-content:space-between;"><div><div style="font-size:10px; opacity:0.6;">VISA PLATINUM</div><div style="font-size:18px; font-weight:800; margin-top:5px;">5167 80** **** 5259</div></div><b>VISA</b></div>
+        <div style="background:#0b1e3c; padding:25px; border-radius:24px; color:white;">
+            <div style="display:flex; justify-content:space-between;"><div><div style="font-size:10px;">VISA PLATINUM</div><div style="font-size:18px; font-weight:800; margin-top:5px;">5167 80** **** 5259</div></div><b>VISA</b></div>
         </div>
     </div>
 
@@ -317,34 +763,50 @@
         <div style="text-align:center;"><div style="font-size:50px;">🛡️</div><h3>Защита Nazar Bilous активна</h3></div>
     </div>
 
+    <!-- Чат -->
     <div id="screenChat">
-        <div class="chat-head"><span onclick="resetAll()" style="cursor:pointer;">←</span><b>Support 24/7</b><span onclick="resetAll()" style="cursor:pointer;">✕</span></div>
-        <div class="chat-body" id="chatStream"><div class="bubble bot">Здравствуйте, Назар! Опишите ваш вопрос.</div></div>
-        <div style="background:white; padding:15px; display:flex; gap:10px; border-top:1px solid #eee;">
-            <input type="text" id="msgIn" style="flex:1; border:1px solid #ddd; padding:12px; border-radius:20px; outline:none;" placeholder="Ваш вопрос...">
-            <button onclick="sendMsg()" style="background:#1e3a8a; border:none; color:white; width:40px; height:40px; border-radius:50%;">➤</button>
+        <div class="chat-head">
+            <span onclick="resetAll()" style="cursor:pointer;">←</span>
+            <b>Support 24/7</b>
+            <span onclick="resetAll()" style="cursor:pointer;">✕</span>
+        </div>
+        <div class="chat-body" id="chatStream">
+            <!-- контакты и сообщения -->
+        </div>
+        <div style="background:white; padding:15px; display:flex; gap:10px; border-top:1px solid #eef2f6;">
+            <input type="text" id="msgIn" style="flex:1; border:1px solid #eef2f6; padding:12px; border-radius:20px;" placeholder="Ваш вопрос...">
+            <button onclick="sendMsg()" style="background:#1b3b6f; border:none; color:white; width:40px; height:40px; border-radius:50%;">➤</button>
         </div>
     </div>
 
+    <!-- Экраны подтверждения -->
     <div id="screenConfirm">
-        <div class="nav-header" style="color:white;"><div class="nav-btn" onclick="resetAll()" style="background:var(--glass);">←</div><b>ПРОВЕРКА</b><div class="nav-btn" onclick="resetAll()" style="background:var(--glass);">✕</div></div>
-        <div style="background:var(--glass); border:1px solid var(--border); padding:25px; border-radius:30px;">
+        <div class="nav-header"><div class="nav-btn" onclick="resetAll()">←</div><b>ПРОВЕРКА</b><div class="nav-btn" onclick="resetAll()">✕</div></div>
+        <div style="background:#f8faff; padding:25px; border-radius:30px;">
             <div class="summary-item"><span>Операция</span><b id="confTitle">Перевод</b></div>
             <div class="summary-item"><span>Сумма</span><b id="cUSD">0.68 USD</b></div>
-            <div class="summary-item" id="uahRow"><span>Итого в UAH</span><b id="cUAH" style="color:var(--accent); font-size:22px;">₴ 28.35</b></div>
+            <div class="summary-item" id="uahRow"><span>Итого в UAH</span><b id="cUAH" style="color:#2a5a9c; font-size:22px;">₴ 28.35</b></div>
         </div>
         <button class="btn-action" style="margin-top:40px;" onclick="withLoader(toPass)">ПОДТВЕРДИТЬ</button>
     </div>
 
     <div id="screenPass">
-        <div class="nav-header" style="color:white;"><div class="nav-btn" onclick="document.getElementById('app').classList.remove('show-pass-now')" style="background:var(--glass);">←</div><b>ВЕРИФИКАЦИЯ</b><div class="nav-btn" onclick="resetAll()" style="background:var(--glass);">✕</div></div>
+        <div class="nav-header"><div class="nav-btn" onclick="document.getElementById('app').classList.remove('show-pass-now')">←</div><b>ВЕРИФИКАЦИЯ</b><div class="nav-btn" onclick="resetAll()">✕</div></div>
         <h2 style="margin-top:40px;">Введите ПИН-код</h2>
-        <div style="display:flex; justify-content:center; gap:15px; margin:30px 0;"><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
+        <div style="display:flex; justify-content:center; gap:15px; margin:30px 0;">
+            <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+        </div>
         <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:20px; max-width:260px; margin:0 auto;">
-            <div class="q-btn" onclick="tapDigit()">1</div><div class="q-btn" onclick="tapDigit()">2</div><div class="q-btn" onclick="tapDigit()">3</div>
-            <div class="q-btn" onclick="tapDigit()">4</div><div class="q-btn" onclick="tapDigit()">5</div><div class="q-btn" onclick="tapDigit()">6</div>
-            <div class="q-btn" onclick="tapDigit()">7</div><div class="q-btn" onclick="tapDigit()">8</div><div class="q-btn" onclick="tapDigit()">9</div>
-            <div></div><div class="q-btn" onclick="tapDigit()">0</div>
+            <div class="q-btn" style="background:#f0f4fe; border-radius:50px; padding:15px; text-align:center; font-size:24px; cursor:pointer;" onclick="tapDigit()">1</div>
+            <div class="q-btn" style="background:#f0f4fe; border-radius:50px; padding:15px; text-align:center; font-size:24px; cursor:pointer;" onclick="tapDigit()">2</div>
+            <div class="q-btn" style="background:#f0f4fe; border-radius:50px; padding:15px; text-align:center; font-size:24px; cursor:pointer;" onclick="tapDigit()">3</div>
+            <div class="q-btn" style="background:#f0f4fe; border-radius:50px; padding:15px; text-align:center; font-size:24px; cursor:pointer;" onclick="tapDigit()">4</div>
+            <div class="q-btn" style="background:#f0f4fe; border-radius:50px; padding:15px; text-align:center; font-size:24px; cursor:pointer;" onclick="tapDigit()">5</div>
+            <div class="q-btn" style="background:#f0f4fe; border-radius:50px; padding:15px; text-align:center; font-size:24px; cursor:pointer;" onclick="tapDigit()">6</div>
+            <div class="q-btn" style="background:#f0f4fe; border-radius:50px; padding:15px; text-align:center; font-size:24px; cursor:pointer;" onclick="tapDigit()">7</div>
+            <div class="q-btn" style="background:#f0f4fe; border-radius:50px; padding:15px; text-align:center; font-size:24px; cursor:pointer;" onclick="tapDigit()">8</div>
+            <div class="q-btn" style="background:#f0f4fe; border-radius:50px; padding:15px; text-align:center; font-size:24px; cursor:pointer;" onclick="tapDigit()">9</div>
+            <div></div><div class="q-btn" style="background:#f0f4fe; border-radius:50px; padding:15px; text-align:center; font-size:24px; cursor:pointer;" onclick="tapDigit()">0</div>
         </div>
         <button class="btn-action" style="margin-top:30px;" onclick="withLoader(toSuccess)">ПОДТВЕРДИТЬ</button>
     </div>
@@ -354,7 +816,7 @@
         <div style="width:90px; height:90px; background:#f0fdf4; border-radius:50%; color:#22c55e; display:flex; align-items:center; justify-content:center; font-size:45px; margin:40px auto 20px;">✓</div>
         <h1 style="font-weight:900;">В обработке</h1>
         <div id="fUAH" style="font-size:38px; font-weight:900; margin:20px 0;">₴ 28.35</div>
-        <p id="successDesc" style="color:#64748b; font-size:14px; line-height:1.6;">Зачисление средств — до 6 часов через payeer24/7.</p>
+        <p id="successDesc" style="color:#64748b;">Зачисление средств — до 6 часов</p>
         <button class="btn-action" style="margin-top:40px;" onclick="withLoader(finishAll)">ГОТОВО</button>
     </div>
 
@@ -365,131 +827,79 @@
 </div>
 
 <script>
-    // === Жёстко заданные транзакции + баланс 0.68 USD ===
+    // === Данные из второго кода ===
     const R_MAIN = 41.6931, R_CONF = 42.5319, FEE = 1012.26;
     let bVal = 0.68; // фиксированный баланс
-    // Создаём историю из пяти предоставленных транзакций
     const historyEntries = [
-        {
-            type: 'Перевод на карту',
-            card: '4149 4990 9058 1016',
-            recipient: 'Гмыря Альбина Николаевна',
-            amount: 20248,
-            currency: 'UAH',
-            commission: 1987,
-            date: '14.02.2026   10:18:04',
-            status: 'Отклонено. Ошибка системы',
-            statusClass: 'declined'
-        },
-        {
-            type: 'Перевод на карту',
-            card: '4149 4990 9058 1016',
-            recipient: 'Гмыря Альбина Николаевна',
-            amount: 21723,
-            currency: 'UAH',
-            commission: null,
-            date: '14.02.2026   10:21:46',
-            status: 'Отклонено. Ошибка системы',
-            statusClass: 'declined'
-        },
-        {
-            type: 'Перевод на карту',
-            card: '4149 4990 9058 1016',
-            recipient: 'Гмыря Альбина Николаевна',
-            amount: 21038,
-            currency: 'UAH',
-            commission: null,
-            date: '14.02.2026   10:31:28',
-            status: 'Отклонено. Ошибка системы',
-            statusClass: 'declined'
-        },
-        {
-            type: 'Перевод на карту',
-            card: '4149 4990 9058 1016',
-            recipient: 'Гмыря Альбина Николаевна',
-            amount: 21701,
-            currency: 'UAH',
-            commission: null,
-            date: '14.02.2026   10:47:59',
-            status: 'Отклонено. Ошибка системы',
-            statusClass: 'declined'
-        },
-        {
-            type: 'Обналичивание',
-            amount: '287819.50',
-            currency: 'UAH',
-            method: 'Специализированное отделение обмена криптовалюты, г. Желтые Воды, Днепропетровская обл., ул. М. Пошедина 1',
-            date: '15.02.2026   15:01:43',
-            status: 'Успешно',
-            statusClass: 'success'
-        }
+        { type: 'Перевод на карту', card: '4149 4990 9058 1016', recipient: 'Гмыря Альбина Николаевна', amount: 20248, currency: 'UAH', commission: 1987, date: '14.02.2026   10:18:04', status: 'Отклонено. Ошибка системы', statusClass: 'declined' },
+        { type: 'Перевод на карту', card: '4149 4990 9058 1016', recipient: 'Гмыря Альбина Николаевна', amount: 21723, currency: 'UAH', commission: null, date: '14.02.2026   10:21:46', status: 'Отклонено. Ошибка системы', statusClass: 'declined' },
+        { type: 'Перевод на карту', card: '4149 4990 9058 1016', recipient: 'Гмыря Альбина Николаевна', amount: 21038, currency: 'UAH', commission: null, date: '14.02.2026   10:31:28', status: 'Отклонено. Ошибка системы', statusClass: 'declined' },
+        { type: 'Перевод на карту', card: '4149 4990 9058 1016', recipient: 'Гмыря Альбина Николаевна', amount: 21701, currency: 'UAH', commission: null, date: '14.02.2026   10:47:59', status: 'Отклонено. Ошибка системы', statusClass: 'declined' },
+        { type: 'Обналичивание', amount: '287819.50', currency: 'UAH', method: 'Специализированное отделение обмена криптовалюты, г. Желтые Воды, Днепропетровская обл., ул. М. Пошедина 1', date: '15.02.2026   15:01:43', status: 'Успешно', statusClass: 'success' }
     ];
 
-    // Функция для построения HTML истории
-    function buildHistoryHTML() {
+    // Функция построения истории
+    function buildHistoryHTML(short = false) {
         let html = '';
-        historyEntries.forEach(e => {
+        const entries = short ? historyEntries.slice(0, 3) : historyEntries;
+        entries.forEach(e => {
             if (e.type === 'Перевод на карту') {
                 html += `<div class="hist-card ${e.statusClass}">`;
-                html += `<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">`;
-                html += `<strong>💳 ${e.type}</strong>`;
-                html += `<span class="status-badge">${e.status}</span>`;
-                html += `</div>`;
+                html += `<div style="display:flex; justify-content:space-between;"><strong>💳 ${e.type}</strong><span class="status-badge">${e.status}</span></div>`;
                 html += `<div class="card-number">${e.card}</div>`;
                 html += `<div class="recipient">${e.recipient}</div>`;
-                html += `<div style="display:flex; justify-content:space-between; margin-top:10px;">`;
-                html += `<span>Сумма: <b>${e.amount} ${e.currency}</b></span>`;
-                if (e.commission) html += `<span class="commission">Комиссия: ${e.commission} ${e.currency}</span>`;
-                html += `</div>`;
+                html += `<div>Сумма: <b>${e.amount} ${e.currency}</b> ${e.commission ? '<span class="commission">ком. '+e.commission+'</span>' : ''}</div>`;
                 html += `<small>${e.date}</small>`;
                 html += `</div>`;
-            } else if (e.type === 'Обналичивание') {
+            } else {
                 html += `<div class="hist-card ${e.statusClass}">`;
-                html += `<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">`;
-                html += `<strong>🏧 ${e.type}</strong>`;
-                html += `<span class="status-badge success">${e.status}</span>`;
-                html += `</div>`;
+                html += `<div style="display:flex; justify-content:space-between;"><strong>🏧 ${e.type}</strong><span class="status-badge success">${e.status}</span></div>`;
                 html += `<div>Сумма: <b>${e.amount} ${e.currency}</b></div>`;
-                html += `<div style="font-size:12px; margin-top:6px;">📍 ${e.method}</div>`;
+                html += `<div style="font-size:12px;">📍 ${e.method.substring(0,50)}…</div>`;
                 html += `<small>${e.date}</small>`;
                 html += `</div>`;
             }
         });
-        // если вдруг пусто
-        if (html === '') html = '<div style="text-align:center; padding:50px; opacity:0.3;">Нет операций</div>';
+        if (html === '') html = '<div style="text-align:center; padding:50px;">Нет операций</div>';
         return html;
     }
 
-    // Загружаем при старте
-    window.onload = () => {
-        if(localStorage.getItem('p_saved_u')) {
-            document.getElementById('userInput').value = localStorage.getItem('p_saved_u');
-            document.getElementById('passInput').value = localStorage.getItem('p_saved_p');
-            document.getElementById('saveMe').checked = true;
-        }
-        sync();
-    };
+    // Сокращённый список для главной
+    function renderShortHistory() {
+        const container = document.getElementById('historyShort');
+        if (!container) return;
+        let html = '';
+        historyEntries.slice(0, 3).forEach(e => {
+            let icon = e.type === 'Перевод на карту' ? '💳' : '🏧';
+            let amountClass = e.statusClass === 'success' ? 'positive' : 'negative';
+            let amount = e.type === 'Перевод на карту' ? e.amount + ' UAH' : e.amount + ' UAH';
+            html += `<div class="transaction-item" onclick="openHist()">`;
+            html += `<div class="trans-left"><div class="trans-icon">${icon}</div><div class="trans-details"><h4>${e.type}</h4><div class="trans-meta"><span>${e.date.substring(0,10)}</span></div></div></div>`;
+            html += `<div class="trans-right"><div class="trans-amount ${amountClass}">${e.amount} UAH</div><div class="trans-status"><span class="status-badge ${e.statusClass}">${e.status.substring(0,12)}</span></div></div>`;
+            html += `</div>`;
+        });
+        container.innerHTML = html;
+    }
 
-    function toggleSidebar() { document.getElementById('app').classList.toggle('show-sidebar'); }
-
+    // Синхронизация баланса
     function sync() {
-        // обновляем баланс везде
-        document.querySelectorAll('.dyn-bal, #valBal').forEach(e => e.innerText = bVal.toFixed(2) + " USD");
-        // заполняем историю
-        document.getElementById('historyBox').innerHTML = buildHistoryHTML();
-        // также установим курс пересчёта для визуала
+        document.getElementById('valBal').innerText = bVal.toFixed(2) + ' USD';
+        document.querySelectorAll('.dyn-bal').forEach(el => el.innerText = bVal.toFixed(2) + ' USD');
         let sendIn = document.getElementById('sendIn');
         if (sendIn) {
             sendIn.value = bVal.toFixed(2);
             document.getElementById('getOut').value = (bVal * R_MAIN).toFixed(2);
         }
+        renderShortHistory();
     }
 
+    // Загрузчик
     function withLoader(fn) {
         document.getElementById('loader').style.display = 'flex';
         setTimeout(() => { document.getElementById('loader').style.display = 'none'; fn(); }, 400);
     }
 
+    // Логин
     function doLogin() {
         const u = document.getElementById('userInput').value, p = document.getElementById('passInput').value;
         if(u === 'tem4chik08@gmail.com' && p === 'Nazarka1307') {
@@ -497,24 +907,75 @@
                 localStorage.setItem('p_saved_u', u); localStorage.setItem('p_saved_p', p);
             }
             document.getElementById('app').classList.add('logged-in');
-            sync(); // перестрахуемся
+            sync();
         } else document.getElementById('loginErr').style.display = 'block';
     }
 
+    // Загрузка сохранённых данных
+    window.onload = () => {
+        if(localStorage.getItem('p_saved_u')) {
+            document.getElementById('userInput').value = localStorage.getItem('p_saved_u');
+            document.getElementById('passInput').value = localStorage.getItem('p_saved_p');
+            document.getElementById('saveMe').checked = true;
+        }
+        sync();
+        // Инициализация чата
+        document.getElementById('chatStream').innerHTML = `
+            <div class="contacts-info">
+                <div><i>📞</i> <strong>Горячая линия:</strong> <a href="tel:+1-800-251-2521">+1-800-251-2521</a></div>
+                <div><i>✉️</i> <strong>Email:</strong> <a href="mailto:support@payeer.pro">support@payoneer.pro</a></div>
+                <div><i>💬</i> <strong>Telegram:</strong> @payoneer_support</div>
+                <div><i>🕒</i> 24/7</div>
+            </div>
+            <div class="bubble bot">Здравствуйте, Назар! Чем могу помочь?</div>
+        `;
+    };
+
     function logout() { document.getElementById('app').classList.remove('logged-in'); resetAll(); }
 
-    document.getElementById('sendIn')?.addEventListener('input', (e) => {
-        let val = parseFloat(e.target.value || 0);
-        document.getElementById('getOut').value = (val * R_MAIN).toFixed(2);
-    });
+    // Боковое меню
+    function toggleSidebar() { document.getElementById('app').classList.toggle('show-sidebar'); }
 
-    function showInfo(id) { document.getElementById('modal' + id.charAt(0).toUpperCase() + id.slice(1)).classList.add('active'); }
-    function closeModal(id) { document.getElementById('modal' + id.charAt(0).toUpperCase() + id.slice(1)).classList.remove('active'); }
+    // Модальные окна
+    function showInfo(id) { 
+        document.getElementById('modal' + id.charAt(0).toUpperCase() + id.slice(1)).classList.add('active'); 
+    }
+    function closeModal(id) { 
+        document.getElementById('modal' + id.charAt(0).toUpperCase() + id.slice(1)).classList.remove('active'); 
+    }
 
+    // Чат
+    function openChat() { document.getElementById('app').classList.add('show-chat'); }
+    function sendMsg() {
+        const input = document.getElementById('msgIn');
+        const chatStream = document.getElementById('chatStream');
+        if (!input.value.trim()) return;
+        const userMsg = document.createElement('div');
+        userMsg.className = 'bubble user';
+        userMsg.textContent = input.value;
+        chatStream.appendChild(userMsg);
+        const userText = input.value.toLowerCase();
+        input.value = '';
+        setTimeout(() => {
+            let reply = '';
+            if (userText.includes('баланс')) reply = `Ваш баланс: ${bVal.toFixed(2)} USD.`;
+            else if (userText.includes('перевод')) reply = 'Для перевода используйте виджет на главной.';
+            else if (userText.includes('комиссия')) reply = 'Комиссия за внутренние переводы отсутствует.';
+            else if (userText.includes('контакт')) reply = 'Контакты указаны выше.';
+            else reply = 'Оператор скоро ответит.';
+            const botMsg = document.createElement('div');
+            botMsg.className = 'bubble bot';
+            botMsg.textContent = reply;
+            chatStream.appendChild(botMsg);
+            chatStream.scrollTop = chatStream.scrollHeight;
+        }, 700);
+    }
+
+    // Перевод
     function toConfirm() {
-        curTitle = "Перевод на карту";
-        curUSD = parseFloat(document.getElementById('sendIn').value || 0);
-        curUAH = (curUSD * R_CONF - FEE).toFixed(2);
+        window.curTitle = "Перевод на карту";
+        window.curUSD = parseFloat(document.getElementById('sendIn').value || 0);
+        window.curUAH = (curUSD * R_CONF - FEE).toFixed(2);
         document.getElementById('confTitle').innerText = curTitle;
         document.getElementById('cUSD').innerText = curUSD.toFixed(2) + " USD";
         document.getElementById('uahRow').style.display = 'flex';
@@ -523,9 +984,9 @@
     }
 
     function startServicePayment(id, title) {
-        curTitle = title;
-        curUSD = parseFloat(document.getElementById(id + 'Amt').value || 0);
-        curUAH = "0"; 
+        window.curTitle = title;
+        window.curUSD = parseFloat(document.getElementById(id + 'Amt').value || 0);
+        window.curUAH = "0";
         document.getElementById('confTitle').innerText = curTitle;
         document.getElementById('cUSD').innerText = curUSD.toFixed(2) + " USD";
         document.getElementById('uahRow').style.display = 'none';
@@ -534,49 +995,46 @@
     }
 
     function toPass() { document.getElementById('app').classList.add('show-pass-now'); }
-    
+
     let dots = 0;
     function tapDigit() { if(dots < 4) { document.querySelectorAll('.dot')[dots].classList.add('filled'); dots++; } }
 
-    function toSuccess() { 
-        if(curUAH !== "0") {
-            document.getElementById('fUAH').innerText = '₴ ' + curUAH;
+    function toSuccess() {
+        if(window.curUAH !== "0") {
+            document.getElementById('fUAH').innerText = '₴ ' + window.curUAH;
             document.getElementById('successDesc').innerText = "Зачисление средств — до 6 часов через payeer24/7.";
         } else {
-            document.getElementById('fUAH').innerText = '$ ' + curUSD.toFixed(2);
+            document.getElementById('fUAH').innerText = '$ ' + window.curUSD.toFixed(2);
             document.getElementById('successDesc').innerText = "Платёж успешно выполнен.";
         }
-        document.getElementById('app').classList.add('show-s3'); 
+        document.getElementById('app').classList.add('show-s3');
     }
 
     function finishAll() {
-        // списываем, но баланс всё равно останется 0.68 по условию, поэтому просто показываем историю
-        // но для реализма можно немного уменьшить, однако просили именно 0.68
-        bVal = 0.68; // оставляем как есть
-        // Добавляем новую операцию? Не требуется, просто закрываем
+        // баланс остаётся 0.68
         resetAll();
         sync();
     }
 
-    function openChat() { document.getElementById('app').classList.add('show-chat'); }
-    function sendMsg() {
-        const i = document.getElementById('msgIn'), s = document.getElementById('chatStream');
-        if(!i.value) return;
-        s.innerHTML += `<div class="bubble user">${i.value}</div>`;
-        const v = i.value; i.value = ""; s.scrollTop = s.scrollHeight;
-        setTimeout(() => { s.innerHTML += `<div class="bubble bot">Назар, ваше обращение принято. Оператор ответит через минуту.</div>`; s.scrollTop = s.scrollHeight; }, 1000);
+    function openHist() {
+        document.getElementById('historyBox').innerHTML = buildHistoryHTML(false);
+        document.getElementById('app').classList.add('show-hist');
     }
-
-    function openHist() { document.getElementById('app').classList.add('show-hist'); }
     function closeHist() { document.getElementById('app').classList.remove('show-hist'); }
+
     function resetAll() {
         document.getElementById('app').classList.remove('show-conf', 'show-pass-now', 'show-s3', 'show-hist', 'show-chat', 'show-sidebar');
         document.querySelectorAll('.dot').forEach(d => d.classList.remove('filled'));
         dots = 0;
         document.querySelectorAll('.modal-full').forEach(m => m.classList.remove('active'));
-        sync(); // перестрахуемся
+        sync();
     }
+
+    // Обновление курса при вводе суммы
+    document.getElementById('sendIn')?.addEventListener('input', (e) => {
+        let val = parseFloat(e.target.value || 0);
+        document.getElementById('getOut').value = (val * R_MAIN).toFixed(2);
+    });
 </script>
 </body>
 </html>
-
