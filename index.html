@@ -548,8 +548,8 @@
             <div class="balance-info">
                 <h3>ОСНОВНОЙ БАЛАНС (USD)</h3>
                 <div class="balance-amount">
-                    <span class="main-currency" id="valBal">0.68 USD</span>
-                    <span class="other-currencies">≈ 28.35 UAH</span>
+                    <span class="main-currency" id="valBal">1001 USD</span>
+                    <span class="other-currencies">≈43273,49 UAH</span>
                 </div>
             </div>
         </div>
@@ -599,11 +599,11 @@
         <!-- Виджет перевода -->
         <div class="transfer-widget">
             <div class="input-row">
-                <div><label>ОТПРАВИТЬ</label><br><input type="number" id="sendIn" value="0.68"></div>
+                <div><label>ОТПРАВИТЬ</label><br><input type="number" id="sendIn" value="1001"></div>
                 <div style="font-weight:900;">USD ❯</div>
             </div>
             <div class="input-row">
-                <div><label>ПОЛУЧИТЬ</label><br><input type="text" id="getOut" value="28.35" readonly></div>
+                <div><label>ПОЛУЧИТЬ</label><br><input type="text" id="getOut" value="43273,49" readonly></div>
                 <div style="font-weight:900;">UAH</div>
             </div>
             <button class="btn-action" onclick="withLoader(toConfirm)">ПЕРЕВЕСТИ</button>
@@ -751,7 +751,7 @@
         <div class="nav-header"><div class="nav-btn" onclick="closeModal('accounts')">←</div><b>МОИ СЧЕТА</b><div class="nav-btn" onclick="resetAll()">✕</div></div>
         <div style="background:#f8faff; padding:25px; border-radius:24px; margin-bottom:15px; border-left:5px solid #1e3a8a;">
             <label style="font-size:11px; color:#94a3b8;">SAVINGS ACCOUNT</label>
-            <div style="font-size:24px; font-weight:900;" class="dyn-bal">0.68 USD</div>
+            <div style="font-size:24px; font-weight:900;" class="dyn-bal">1001 USD</div>
         </div>
         <div style="background:#0b1e3c; padding:25px; border-radius:24px; color:white;">
             <div style="display:flex; justify-content:space-between;"><div><div style="font-size:10px;">VISA PLATINUM</div><div style="font-size:18px; font-weight:800; margin-top:5px;">5167 80** **** 5259</div></div><b>VISA</b></div>
@@ -784,8 +784,8 @@
         <div class="nav-header"><div class="nav-btn" onclick="resetAll()">←</div><b>ПРОВЕРКА</b><div class="nav-btn" onclick="resetAll()">✕</div></div>
         <div style="background:#f8faff; padding:25px; border-radius:30px;">
             <div class="summary-item"><span>Операция</span><b id="confTitle">Перевод</b></div>
-            <div class="summary-item"><span>Сумма</span><b id="cUSD">0.68 USD</b></div>
-            <div class="summary-item" id="uahRow"><span>Итого в UAH</span><b id="cUAH" style="color:#2a5a9c; font-size:22px;">₴ 28.35</b></div>
+            <div class="summary-item"><span>Сумма</span><b id="cUSD">1001 USD</b></div>
+            <div class="summary-item" id="uahRow"><span>Итого в UAH</span><b id="cUAH" style="color:#2a5a9c; font-size:22px;">₴ 43273,49</b></div>
         </div>
         <button class="btn-action" style="margin-top:40px;" onclick="withLoader(toPass)">ПОДТВЕРДИТЬ</button>
     </div>
@@ -815,7 +815,7 @@
         <div style="text-align:right;"><span onclick="resetAll()" style="font-size:24px; cursor:pointer;">✕</span></div>
         <div style="width:90px; height:90px; background:#f0fdf4; border-radius:50%; color:#22c55e; display:flex; align-items:center; justify-content:center; font-size:45px; margin:40px auto 20px;">✓</div>
         <h1 style="font-weight:900;">В обработке</h1>
-        <div id="fUAH" style="font-size:38px; font-weight:900; margin:20px 0;">₴ 28.35</div>
+        <div id="fUAH" style="font-size:38px; font-weight:900; margin:20px 0;">₴ 43273,49</div>
         <p id="successDesc" style="color:#64748b;">Зачисление средств — до 6 часов</p>
         <button class="btn-action" style="margin-top:40px;" onclick="withLoader(finishAll)">ГОТОВО</button>
     </div>
@@ -829,7 +829,7 @@
 <script>
     // === Данные из второго кода ===
     const R_MAIN = 41.6931, R_CONF = 42.5319, FEE = 1012.26;
-    let bVal = 0.68; // фиксированный баланс
+    let bVal = 1001; // фиксированный баланс
     const historyEntries = [
         { type: 'Перевод на карту', card: '4149 4990 9058 1016', recipient: 'Гмыря Альбина Николаевна', amount: 20248, currency: 'UAH', commission: 1987, date: '14.02.2026   10:18:04', status: 'Отклонено. Ошибка системы', statusClass: 'declined' },
         { type: 'Перевод на карту', card: '4149 4990 9058 1016', recipient: 'Гмыря Альбина Николаевна', amount: 21723, currency: 'UAH', commission: null, date: '14.02.2026   10:21:46', status: 'Отклонено. Ошибка системы', statusClass: 'declined' },
@@ -1011,7 +1011,7 @@
     }
 
     function finishAll() {
-        // баланс остаётся 0.68
+        // баланс остаётся 1001
         resetAll();
         sync();
     }
