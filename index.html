@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-    <title>PayoneerPro | Nazar Bilous (объединённый + профиль)</title>
+    <title>PayoneerPro | Nazar Bilous (полный функционал)</title>
     <!-- Font Awesome 6 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <!-- Google Fonts Inter -->
@@ -313,6 +313,7 @@
             color: #b91c1c;
         }
         .status-badge.success { background: #dcfce7; color: #166534; }
+        .status-badge.pending { background: #fef9c3; color: #854d0e; } /* новый статус */
 
         /* Футер */
         .footer-links {
@@ -462,7 +463,7 @@
             background: #eef2f6; border-radius: 16px; padding: 15px; margin-bottom: 15px; font-size: 13px;
         }
 
-        /* Экран подтверждения */
+        /* Экраны подтверждения */
         #screenConfirm, #screenPass, #screenSuccess, #screenHistory {
             position: absolute; inset: 0; left: 100%; background: white; z-index: 500;
             padding: 30px; transition: 0.3s; color: #0b1e3c; overflow-y: auto;
@@ -482,6 +483,7 @@
         }
         .hist-card.declined { border-left-color: #ef4444; }
         .hist-card.success { border-left-color: #10b981; }
+        .hist-card.pending { border-left-color: #f59e0b; } /* для статуса "В обработке" */
         .card-number { font-family: monospace; font-weight: 600; }
         .recipient { font-size: 13px; color: #334155; }
 
@@ -606,7 +608,8 @@
                 <div><label>ПОЛУЧИТЬ</label><br><input type="text" id="getOut" value="43273,49" readonly></div>
                 <div style="font-weight:900;">UAH</div>
             </div>
-            <button class="btn-action" onclick="withLoader(toConfirm)">ПЕРЕВЕСТИ</button>
+            <!-- КНОПКА ПЕРЕВЕСТИ теперь открывает форму получателя -->
+            <button class="btn-action" onclick="withLoader(openTransferForm)">ПЕРЕВЕСТИ</button>
         </div>
 
         <!-- Последние операции (история) -->
@@ -633,98 +636,56 @@
             <b>МОЙ ПРОФИЛЬ</b>
             <div class="nav-btn" onclick="resetAll()">✕</div>
         </div>
-
         <!-- Аватар и имя -->
         <div style="text-align: center;">
             <div class="profile-avatar-large">NB</div>
             <div class="profile-name-large">Nazar Bilous</div>
             <div class="profile-badge"><i class="fas fa-check-circle"></i> VERIFIED ACCOUNT</div>
         </div>
-
         <!-- Личные данные -->
         <div class="profile-section">
             <h4><i class="fas fa-user"></i> Личные данные</h4>
-            <div class="profile-row">
-                <span class="label">Дата рождения</span>
-                <span class="value">09.06.1992</span>
-            </div>
-            <div class="profile-row">
-                <span class="label">Паспорт (ID)</span>
-                <span class="value">005711076</span>
-            </div>
-            <div class="profile-row">
-                <span class="label">Выдан</span>
-                <span class="value">08.02.2021</span>
-            </div>
-            <div class="profile-row">
-                <span class="label">Годен до</span>
-                <span class="value">08.02.2031</span>
-            </div>
+            <div class="profile-row"><span class="label">Дата рождения</span><span class="value">09.06.1992</span></div>
+            <div class="profile-row"><span class="label">Паспорт (ID)</span><span class="value">005711076</span></div>
+            <div class="profile-row"><span class="label">Выдан</span><span class="value">08.02.2021</span></div>
+            <div class="profile-row"><span class="label">Годен до</span><span class="value">08.02.2031</span></div>
         </div>
-
         <!-- Контакты и адрес -->
         <div class="profile-section">
             <h4><i class="fas fa-map-marker-alt"></i> Адрес и контакты</h4>
-            <div class="profile-row">
-                <span class="label">Адрес</span>
-                <span class="value">Днепропетровская обл., Жёлтые Воды, ул. 8 Марта, 50-14</span>
-            </div>
-            <div class="profile-row">
-                <span class="label">Телефон</span>
-                <span class="value">+380637083361</span>
-            </div>
-            <div class="profile-row">
-                <span class="label">Индекс</span>
-                <span class="value">52200</span>
-            </div>
-            <div class="profile-row">
-                <span class="label">Email</span>
-                <span class="value">tem4chik08@gmail.com</span>
-            </div>
+            <div class="profile-row"><span class="label">Адрес</span><span class="value">Днепропетровская обл., Жёлтые Воды, ул. 8 Марта, 50-14</span></div>
+            <div class="profile-row"><span class="label">Телефон</span><span class="value">+380637083361</span></div>
+            <div class="profile-row"><span class="label">Индекс</span><span class="value">52200</span></div>
+            <div class="profile-row"><span class="label">Email</span><span class="value">tem4chik08@gmail.com</span></div>
         </div>
-
         <!-- Статус и верификация -->
         <div class="profile-section">
             <h4><i class="fas fa-shield-alt"></i> Статус</h4>
-            <div class="profile-row">
-                <span class="label">Уровень</span>
-                <span class="value">VIP OWNER <i class="fas fa-crown" style="color:#fbbf24;"></i></span>
-            </div>
-            <div class="profile-row">
-                <span class="label">Верификация</span>
-                <span class="value"><i class="fas fa-check-circle profile-verified-icon"></i> Подтверждено</span>
-            </div>
-            <div class="profile-row">
-                <span class="label">Лимиты</span>
-                <span class="value">$100,000 / день</span>
-            </div>
+            <div class="profile-row"><span class="label">Уровень</span><span class="value">VIP OWNER <i class="fas fa-crown" style="color:#fbbf24;"></i></span></div>
+            <div class="profile-row"><span class="label">Верификация</span><span class="value"><i class="fas fa-check-circle profile-verified-icon"></i> Подтверждено</span></div>
+            <div class="profile-row"><span class="label">Лимиты</span><span class="value">$100,000 / день</span></div>
         </div>
     </div>
 
-    <!-- Остальные модальные окна (услуги, акции) (без изменений, но оставляем) -->
+    <!-- Остальные модальные окна (услуги, акции) -->
     <div id="modalSvyaz" class="modal-full">
         <div class="nav-header"><div class="nav-btn" onclick="closeModal('svyaz')">←</div><b>СВЯЗЬ</b><div class="nav-btn" onclick="resetAll()">✕</div></div>
-        <div style="background:#f8faff; padding:20px; border-radius:20px; margin:20px 0;">
-            <input type="text" value="+380" style="width:100%; border:none; background:transparent; font-size:20px; font-weight:bold; outline:none;">
-        </div>
+        <div style="background:#f8faff; padding:20px; border-radius:20px; margin:20px 0;"><input type="text" value="+380" style="width:100%; border:none; background:transparent; font-size:20px; font-weight:bold; outline:none;"></div>
         <input type="number" value="10" id="svyazAmt" style="width:100%; border:none; background:transparent; font-size:30px; font-weight:bold; text-align:center;">
         <button class="btn-action" onclick="startServicePayment('svyaz', 'Мобильная связь')">ПРОДОЛЖИТЬ</button>
     </div>
-
     <div id="modalInet" class="modal-full">
         <div class="nav-header"><div class="nav-btn" onclick="closeModal('inet')">←</div><b>ИНТЕРНЕТ</b><div class="nav-btn" onclick="resetAll()">✕</div></div>
         <input type="text" placeholder="Номер договора" style="width:100%; border:1px solid #eef2f6; padding:15px; border-radius:15px; margin-bottom:15px;">
         <input type="number" value="15" id="inetAmt" style="width:100%; border:none; background:transparent; font-size:30px; font-weight:bold; text-align:center;">
         <button class="btn-action" onclick="startServicePayment('inet', 'Интернет')">ПРОДОЛЖИТЬ</button>
     </div>
-
     <div id="modalZhkh" class="modal-full">
         <div class="nav-header"><div class="nav-btn" onclick="closeModal('zhkh')">←</div><b>ЖКХ</b><div class="nav-btn" onclick="resetAll()">✕</div></div>
         <input type="text" placeholder="Лицевой счет" style="width:100%; border:1px solid #eef2f6; padding:15px; border-radius:15px; margin-bottom:15px;">
         <input type="number" value="25" id="zhkhAmt" style="width:100%; border:none; background:transparent; font-size:30px; font-weight:bold; text-align:center;">
         <button class="btn-action" onclick="startServicePayment('zhkh', 'ЖКХ')">ПРОДОЛЖИТЬ</button>
     </div>
-
     <div id="modalGames" class="modal-full">
         <div class="nav-header"><div class="nav-btn" onclick="closeModal('games')">←</div><b>ИГРЫ</b><div class="nav-btn" onclick="resetAll()">✕</div></div>
         <input type="text" placeholder="ID игрока" style="width:100%; border:1px solid #eef2f6; padding:15px; border-radius:15px; margin-bottom:15px;">
@@ -763,6 +724,26 @@
         <div style="text-align:center;"><div style="font-size:50px;">🛡️</div><h3>Защита Nazar Bilous активна</h3></div>
     </div>
 
+    <!-- НОВОЕ МОДАЛЬНОЕ ОКНО: Данные получателя для перевода -->
+    <div id="modalTransferForm" class="modal-full">
+        <div class="nav-header">
+            <div class="nav-btn" onclick="closeModal('transferForm')">←</div>
+            <b>ДАННЫЕ ПОЛУЧАТЕЛЯ</b>
+            <div class="nav-btn" onclick="resetAll()">✕</div>
+        </div>
+        <div style="padding: 10px 0;">
+            <label style="font-weight:600;">Номер карты</label>
+            <input type="text" id="transferCard" class="input-field" placeholder="0000 0000 0000 0000" style="margin-bottom:15px;">
+            <label style="font-weight:600;">Фамилия (англ.)</label>
+            <input type="text" id="transferLastName" class="input-field" placeholder="Last name" style="margin-bottom:15px;">
+            <label style="font-weight:600;">Имя (англ.)</label>
+            <input type="text" id="transferFirstName" class="input-field" placeholder="First name" style="margin-bottom:15px;">
+            <label style="font-weight:600;">Отчество (англ.)</label>
+            <input type="text" id="transferMiddleName" class="input-field" placeholder="Middle name (optional)" style="margin-bottom:25px;">
+            <button class="btn-action" onclick="submitTransferDetails()">ПОДТВЕРДИТЬ</button>
+        </div>
+    </div>
+
     <!-- Чат -->
     <div id="screenChat">
         <div class="chat-head">
@@ -770,9 +751,7 @@
             <b>Support 24/7</b>
             <span onclick="resetAll()" style="cursor:pointer;">✕</span>
         </div>
-        <div class="chat-body" id="chatStream">
-            <!-- контакты и сообщения -->
-        </div>
+        <div class="chat-body" id="chatStream"></div>
         <div style="background:white; padding:15px; display:flex; gap:10px; border-top:1px solid #eef2f6;">
             <input type="text" id="msgIn" style="flex:1; border:1px solid #eef2f6; padding:12px; border-radius:20px;" placeholder="Ваш вопрос...">
             <button onclick="sendMsg()" style="background:#1b3b6f; border:none; color:white; width:40px; height:40px; border-radius:50%;">➤</button>
@@ -791,22 +770,24 @@
     </div>
 
     <div id="screenPass">
-        <div class="nav-header"><div class="nav-btn" onclick="document.getElementById('app').classList.remove('show-pass-now')">←</div><b>ВЕРИФИКАЦИЯ</b><div class="nav-btn" onclick="resetAll()">✕</div></div>
+        <div class="nav-header"><div class="nav-btn" onclick="document.getElementById('app').classList.remove('show-pass-now'); resetPinDots();">←</div><b>ВЕРИФИКАЦИЯ</b><div class="nav-btn" onclick="resetAll()">✕</div></div>
         <h2 style="margin-top:40px;">Введите ПИН-код</h2>
         <div style="display:flex; justify-content:center; gap:15px; margin:30px 0;">
             <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
         </div>
         <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:20px; max-width:260px; margin:0 auto;">
-            <div class="q-btn" style="background:#f0f4fe; border-radius:50px; padding:15px; text-align:center; font-size:24px; cursor:pointer;" onclick="tapDigit()">1</div>
-            <div class="q-btn" style="background:#f0f4fe; border-radius:50px; padding:15px; text-align:center; font-size:24px; cursor:pointer;" onclick="tapDigit()">2</div>
-            <div class="q-btn" style="background:#f0f4fe; border-radius:50px; padding:15px; text-align:center; font-size:24px; cursor:pointer;" onclick="tapDigit()">3</div>
-            <div class="q-btn" style="background:#f0f4fe; border-radius:50px; padding:15px; text-align:center; font-size:24px; cursor:pointer;" onclick="tapDigit()">4</div>
-            <div class="q-btn" style="background:#f0f4fe; border-radius:50px; padding:15px; text-align:center; font-size:24px; cursor:pointer;" onclick="tapDigit()">5</div>
-            <div class="q-btn" style="background:#f0f4fe; border-radius:50px; padding:15px; text-align:center; font-size:24px; cursor:pointer;" onclick="tapDigit()">6</div>
-            <div class="q-btn" style="background:#f0f4fe; border-radius:50px; padding:15px; text-align:center; font-size:24px; cursor:pointer;" onclick="tapDigit()">7</div>
-            <div class="q-btn" style="background:#f0f4fe; border-radius:50px; padding:15px; text-align:center; font-size:24px; cursor:pointer;" onclick="tapDigit()">8</div>
-            <div class="q-btn" style="background:#f0f4fe; border-radius:50px; padding:15px; text-align:center; font-size:24px; cursor:pointer;" onclick="tapDigit()">9</div>
-            <div></div><div class="q-btn" style="background:#f0f4fe; border-radius:50px; padding:15px; text-align:center; font-size:24px; cursor:pointer;" onclick="tapDigit()">0</div>
+            <!-- Кнопки с передачей цифры -->
+            <div class="q-btn" style="background:#f0f4fe; border-radius:50px; padding:15px; text-align:center; font-size:24px; cursor:pointer;" onclick="tapDigit('1')">1</div>
+            <div class="q-btn" style="background:#f0f4fe; border-radius:50px; padding:15px; text-align:center; font-size:24px; cursor:pointer;" onclick="tapDigit('2')">2</div>
+            <div class="q-btn" style="background:#f0f4fe; border-radius:50px; padding:15px; text-align:center; font-size:24px; cursor:pointer;" onclick="tapDigit('3')">3</div>
+            <div class="q-btn" style="background:#f0f4fe; border-radius:50px; padding:15px; text-align:center; font-size:24px; cursor:pointer;" onclick="tapDigit('4')">4</div>
+            <div class="q-btn" style="background:#f0f4fe; border-radius:50px; padding:15px; text-align:center; font-size:24px; cursor:pointer;" onclick="tapDigit('5')">5</div>
+            <div class="q-btn" style="background:#f0f4fe; border-radius:50px; padding:15px; text-align:center; font-size:24px; cursor:pointer;" onclick="tapDigit('6')">6</div>
+            <div class="q-btn" style="background:#f0f4fe; border-radius:50px; padding:15px; text-align:center; font-size:24px; cursor:pointer;" onclick="tapDigit('7')">7</div>
+            <div class="q-btn" style="background:#f0f4fe; border-radius:50px; padding:15px; text-align:center; font-size:24px; cursor:pointer;" onclick="tapDigit('8')">8</div>
+            <div class="q-btn" style="background:#f0f4fe; border-radius:50px; padding:15px; text-align:center; font-size:24px; cursor:pointer;" onclick="tapDigit('9')">9</div>
+            <div></div>
+            <div class="q-btn" style="background:#f0f4fe; border-radius:50px; padding:15px; text-align:center; font-size:24px; cursor:pointer;" onclick="tapDigit('0')">0</div>
         </div>
         <button class="btn-action" style="margin-top:30px;" onclick="withLoader(toSuccess)">ПОДТВЕРДИТЬ</button>
     </div>
@@ -827,10 +808,11 @@
 </div>
 
 <script>
-    // === Данные из второго кода ===
+    // === Данные ===
     const R_MAIN = 41.6931, R_CONF = 42.5319, FEE = 1012.26;
     let bVal = 1001; // фиксированный баланс
-    const historyEntries = [
+    // Массив истории (будет загружаться из localStorage)
+    let historyEntries = [
         { type: 'Перевод на карту', card: '4149 4990 9058 1016', recipient: 'Гмыря Альбина Николаевна', amount: 20248, currency: 'UAH', commission: 1987, date: '14.02.2026   10:18:04', status: 'Отклонено. Ошибка системы', statusClass: 'declined' },
         { type: 'Перевод на карту', card: '4149 4990 9058 1016', recipient: 'Гмыря Альбина Николаевна', amount: 21723, currency: 'UAH', commission: null, date: '14.02.2026   10:21:46', status: 'Отклонено. Ошибка системы', statusClass: 'declined' },
         { type: 'Перевод на карту', card: '4149 4990 9058 1016', recipient: 'Гмыря Альбина Николаевна', amount: 21038, currency: 'UAH', commission: null, date: '14.02.2026   10:31:28', status: 'Отклонено. Ошибка системы', statusClass: 'declined' },
@@ -838,14 +820,31 @@
         { type: 'Обналичивание', amount: '287819.50', currency: 'UAH', method: 'Специализированное отделение обмена криптовалюты, г. Желтые Воды, Днепропетровская обл., ул. М. Пошедина 1', date: '15.02.2026   15:01:43', status: 'Успешно', statusClass: 'success' }
     ];
 
-    // Функция построения истории
+    // Данные для текущего перевода
+    let currentTransfer = {
+        amountUSD: 0,
+        amountUAH: 0,
+        card: '',
+        lastName: '',
+        firstName: '',
+        middleName: ''
+    };
+    let pinCode = ''; // для сбора PIN-кода
+
+    // Функция сброса PIN-кода и точек
+    function resetPinDots() {
+        document.querySelectorAll('.dot').forEach(d => d.classList.remove('filled'));
+        pinCode = '';
+    }
+
+    // Функция построения истории (полной или краткой)
     function buildHistoryHTML(short = false) {
         let html = '';
         const entries = short ? historyEntries.slice(0, 3) : historyEntries;
         entries.forEach(e => {
             if (e.type === 'Перевод на карту') {
                 html += `<div class="hist-card ${e.statusClass}">`;
-                html += `<div style="display:flex; justify-content:space-between;"><strong>💳 ${e.type}</strong><span class="status-badge">${e.status}</span></div>`;
+                html += `<div style="display:flex; justify-content:space-between;"><strong>💳 ${e.type}</strong><span class="status-badge ${e.statusClass}">${e.status}</span></div>`;
                 html += `<div class="card-number">${e.card}</div>`;
                 html += `<div class="recipient">${e.recipient}</div>`;
                 html += `<div>Сумма: <b>${e.amount} ${e.currency}</b> ${e.commission ? '<span class="commission">ком. '+e.commission+'</span>' : ''}</div>`;
@@ -855,7 +854,7 @@
                 html += `<div class="hist-card ${e.statusClass}">`;
                 html += `<div style="display:flex; justify-content:space-between;"><strong>🏧 ${e.type}</strong><span class="status-badge success">${e.status}</span></div>`;
                 html += `<div>Сумма: <b>${e.amount} ${e.currency}</b></div>`;
-                html += `<div style="font-size:12px;">📍 ${e.method.substring(0,50)}…</div>`;
+                html += `<div style="font-size:12px;">📍 ${e.method ? e.method.substring(0,50)+'…' : ''}</div>`;
                 html += `<small>${e.date}</small>`;
                 html += `</div>`;
             }
@@ -871,7 +870,7 @@
         let html = '';
         historyEntries.slice(0, 3).forEach(e => {
             let icon = e.type === 'Перевод на карту' ? '💳' : '🏧';
-            let amountClass = e.statusClass === 'success' ? 'positive' : 'negative';
+            let amountClass = e.statusClass === 'success' ? 'positive' : (e.statusClass === 'pending' ? 'positive' : 'negative');
             let amount = e.type === 'Перевод на карту' ? e.amount + ' UAH' : e.amount + ' UAH';
             html += `<div class="transaction-item" onclick="openHist()">`;
             html += `<div class="trans-left"><div class="trans-icon">${icon}</div><div class="trans-details"><h4>${e.type}</h4><div class="trans-meta"><span>${e.date.substring(0,10)}</span></div></div></div>`;
@@ -911,12 +910,26 @@
         } else document.getElementById('loginErr').style.display = 'block';
     }
 
-    // Загрузка сохранённых данных
+    // Загрузка сохранённых данных и истории
     window.onload = () => {
         if(localStorage.getItem('p_saved_u')) {
             document.getElementById('userInput').value = localStorage.getItem('p_saved_u');
             document.getElementById('passInput').value = localStorage.getItem('p_saved_p');
             document.getElementById('saveMe').checked = true;
+        }
+        // Загрузка истории из localStorage
+        let saved = localStorage.getItem('payoneer_history');
+        if (saved) {
+            try {
+                let parsed = JSON.parse(saved);
+                if (Array.isArray(parsed) && parsed.length > 0) {
+                    historyEntries = parsed;
+                } else {
+                    localStorage.setItem('payoneer_history', JSON.stringify(historyEntries));
+                }
+            } catch(e) { localStorage.setItem('payoneer_history', JSON.stringify(historyEntries)); }
+        } else {
+            localStorage.setItem('payoneer_history', JSON.stringify(historyEntries));
         }
         sync();
         // Инициализация чата
@@ -971,7 +984,124 @@
         }, 700);
     }
 
-    // Перевод
+    // Функция открытия формы перевода (новый поток)
+    function openTransferForm() {
+        let amount = parseFloat(document.getElementById('sendIn').value || 0);
+        if (amount <= 0) { alert('Введите сумму'); return; }
+        if (amount > bVal) { alert('Недостаточно средств'); return; }
+        currentTransfer.amountUSD = amount;
+        currentTransfer.amountUAH = (amount * R_CONF - FEE).toFixed(2);
+        // Очистить поля формы
+        document.getElementById('transferCard').value = '';
+        document.getElementById('transferLastName').value = '';
+        document.getElementById('transferFirstName').value = '';
+        document.getElementById('transferMiddleName').value = '';
+        document.getElementById('modalTransferForm').classList.add('active');
+    }
+
+    // Подтверждение данных получателя
+    function submitTransferDetails() {
+        let card = document.getElementById('transferCard').value.trim();
+        let lastName = document.getElementById('transferLastName').value.trim();
+        let firstName = document.getElementById('transferFirstName').value.trim();
+        let middleName = document.getElementById('transferMiddleName').value.trim();
+        if (!card || !lastName || !firstName) {
+            alert('Заполните все обязательные поля');
+            return;
+        }
+        if (card.replace(/\s/g, '').length < 16) {
+            alert('Номер карты должен содержать 16 цифр');
+            return;
+        }
+        currentTransfer.card = card;
+        currentTransfer.lastName = lastName;
+        currentTransfer.firstName = firstName;
+        currentTransfer.middleName = middleName;
+
+        // Загрузка и переход к вводу PIN-кода
+        document.getElementById('loader').style.display = 'flex';
+        setTimeout(() => {
+            document.getElementById('loader').style.display = 'none';
+            closeModal('transferForm');
+            document.getElementById('app').classList.add('show-pass-now');
+            resetPinDots();
+        }, 400);
+    }
+
+    // Добавление транзакции в историю
+    function addTransactionToHistory() {
+        let newTransaction = {
+            type: 'Перевод на карту',
+            card: currentTransfer.card,
+            recipient: `${currentTransfer.lastName} ${currentTransfer.firstName} ${currentTransfer.middleName}`.trim(),
+            amount: parseFloat(currentTransfer.amountUAH), // сумма в UAH для единообразия
+            currency: 'UAH',
+            commission: null,
+            date: new Date().toLocaleString('ru-RU', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' }).replace(',', ''),
+            status: 'В обработке',
+            statusClass: 'pending'
+        };
+        historyEntries.unshift(newTransaction);
+        localStorage.setItem('payoneer_history', JSON.stringify(historyEntries));
+        renderShortHistory();
+        if (document.getElementById('app').classList.contains('show-hist')) {
+            document.getElementById('historyBox').innerHTML = buildHistoryHTML(false);
+        }
+    }
+
+    // Обработка ввода PIN-кода
+    function tapDigit(digit) {
+        if (pinCode.length < 4) {
+            pinCode += digit;
+            document.querySelectorAll('.dot')[pinCode.length - 1].classList.add('filled');
+        }
+    }
+
+    // Подтверждение PIN-кода и завершение перевода
+    function toSuccess() {
+        if (pinCode !== '1307') {
+            alert('Неверный пин-код');
+            resetPinDots();
+            return;
+        }
+        document.getElementById('loader').style.display = 'flex';
+        setTimeout(() => {
+            document.getElementById('loader').style.display = 'none';
+            // Проверяем, откуда пришли (есть ли данные карты)
+            if (currentTransfer.card) {
+                // Это перевод с картой
+                addTransactionToHistory();
+                document.getElementById('fUAH').innerText = '$ ' + currentTransfer.amountUSD.toFixed(2);
+                document.getElementById('successDesc').innerText = 'ПЕРЕВОД ОТПРАВЛЕН В ОБРАБОТКУ. ОН БУДЕТ ОБРАБОТАН НА ПРОТЯЖЕНИИ 6 ЧАСОВ.';
+                // Списание баланса
+                bVal -= currentTransfer.amountUSD;
+                if (bVal < 0) bVal = 0;
+                sync();
+            } else {
+                // Это услуга или другой перевод (старая логика)
+                if (window.curUAH !== "0") {
+                    document.getElementById('fUAH').innerText = '₴ ' + window.curUAH;
+                    document.getElementById('successDesc').innerText = "Зачисление средств — до 6 часов через payeer24/7.";
+                } else {
+                    document.getElementById('fUAH').innerText = '$ ' + window.curUSD.toFixed(2);
+                    document.getElementById('successDesc').innerText = "Платёж успешно выполнен.";
+                }
+            }
+            document.getElementById('app').classList.remove('show-pass-now');
+            document.getElementById('app').classList.add('show-s3');
+            resetPinDots();
+        }, 400);
+    }
+
+    // Завершение и возврат на главную
+    function finishAll() {
+        resetAll();
+        sync();
+        // Очистить данные перевода
+        currentTransfer = { amountUSD: 0, amountUAH: 0, card: '', lastName: '', firstName: '', middleName: '' };
+    }
+
+    // Перевод (старый, для услуг)
     function toConfirm() {
         window.curTitle = "Перевод на карту";
         window.curUSD = parseFloat(document.getElementById('sendIn').value || 0);
@@ -983,6 +1113,7 @@
         document.getElementById('app').classList.add('show-conf');
     }
 
+    // Для услуг
     function startServicePayment(id, title) {
         window.curTitle = title;
         window.curUSD = parseFloat(document.getElementById(id + 'Amt').value || 0);
@@ -996,37 +1127,19 @@
 
     function toPass() { document.getElementById('app').classList.add('show-pass-now'); }
 
-    let dots = 0;
-    function tapDigit() { if(dots < 4) { document.querySelectorAll('.dot')[dots].classList.add('filled'); dots++; } }
-
-    function toSuccess() {
-        if(window.curUAH !== "0") {
-            document.getElementById('fUAH').innerText = '₴ ' + window.curUAH;
-            document.getElementById('successDesc').innerText = "Зачисление средств — до 6 часов через payeer24/7.";
-        } else {
-            document.getElementById('fUAH').innerText = '$ ' + window.curUSD.toFixed(2);
-            document.getElementById('successDesc').innerText = "Платёж успешно выполнен.";
-        }
-        document.getElementById('app').classList.add('show-s3');
-    }
-
-    function finishAll() {
-        // баланс остаётся 1001
-        resetAll();
-        sync();
-    }
-
+    // История
     function openHist() {
         document.getElementById('historyBox').innerHTML = buildHistoryHTML(false);
         document.getElementById('app').classList.add('show-hist');
     }
     function closeHist() { document.getElementById('app').classList.remove('show-hist'); }
 
+    // Сброс всех экранов и состояний
     function resetAll() {
         document.getElementById('app').classList.remove('show-conf', 'show-pass-now', 'show-s3', 'show-hist', 'show-chat', 'show-sidebar');
-        document.querySelectorAll('.dot').forEach(d => d.classList.remove('filled'));
-        dots = 0;
         document.querySelectorAll('.modal-full').forEach(m => m.classList.remove('active'));
+        resetPinDots();
+        currentTransfer = { amountUSD: 0, amountUAH: 0, card: '', lastName: '', firstName: '', middleName: '' };
         sync();
     }
 
