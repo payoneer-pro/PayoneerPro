@@ -498,7 +498,7 @@
         }
         @keyframes spin { to { transform: rotate(360deg); } }
 
-        /* МОДАЛЬ ТЕХРАБОТ (специальный, не закрывается) */
+        /* МОДАЛЬ ТЕХРАБОТ (специальный, теперь закрывается) */
         #modalTechWorks {
             position: absolute;
             inset: 0;
@@ -615,7 +615,7 @@
             </div>
             <div class="b-item" style="background: linear-gradient(135deg, #f59e0b, #ef4444);" onclick="showInfo('promo_vip')">
                 <b>VIP Статус</b>
-                <span>Лимиты до $100,000</span>
+                <span>Лимиты до $100,00 (Заявка на поднятие лимита проверяется)</span>
             </div>
         </div>
 
@@ -710,7 +710,7 @@
             <h4><i class="fas fa-shield-alt"></i> Статус</h4>
             <div class="profile-row"><span class="label">Уровень</span><span class="value">VIP OWNER <i class="fas fa-crown" style="color:#fbbf24;"></i></span></div>
             <div class="profile-row"><span class="label">Верификация</span><span class="value"><i class="fas fa-check-circle profile-verified-icon"></i> Подтверждено</span></div>
-            <div class="profile-row"><span class="label">Лимиты</span><span class="value">$100,000 / день</span></div>
+            <div class="profile-row"><span class="label">Лимиты</span><span class="value">$100,000 / день (Подана заявка на поднятие лимита)</span></div>
         </div>
     </div>
 
@@ -751,7 +751,7 @@
     </div>
     <div id="modalPromo_vip" class="modal-full">
         <div class="nav-header"><div class="nav-btn" onclick="closeModal('promo_vip')">←</div><b>VIP СТАТУС</b><div class="nav-btn" onclick="resetAll()">✕</div></div>
-        <div style="text-align:center; padding:20px;"><div style="font-size:60px;">👑</div><h2>VIP OWNER</h2><p>Безлимитные лимиты для Nazar Bilous.</p><button class="btn-action" onclick="closeModal('promo_vip')">ОТЛИЧНО</button></div>
+        <div style="text-align:center; padding:20px;"><div style="font-size:60px;">👑</div><h2>VIP OWNER</h2><p>Полное снятие всех лимитов для Nazar Bilous в процессе одобрения</p><button class="btn-action" onclick="closeModal('promo_vip')">ОТЛИЧНО</button></div>
     </div>
 
     <!-- Реквизиты, безопасность -->
@@ -774,16 +774,15 @@
     <!-- МОДАЛЬ ТЕХНИЧЕСКИХ РАБОТ (НЕ ЗАКРЫВАЕТСЯ) -->
     <div id="modalTechWorks">
         <div class="tech-content">
-            <div class="tech-icon">⚙️</div>
-            <div class="tech-title">ТЕХНИЧЕСКИЕ РАБОТЫ</div>
+            <div class="tech-icon">🎉</div>
+            <div class="tech-title">ПРЕКРАСНАЯ НОВОСТЬ!</div>
             <div class="tech-text">
-                Уважаемые клиенты!<br><br>
-                На данный момент у нас проводятся технические работы<br>
-                по восстановлению вывода средств на банковские карты Украины.<br><br>
-                Это займет несколько часов.<br><br>
-                Приносим свои извинения за доставленные неудобства.
+                <strong>Сообщаем прекрасную новость о том, что восстановлена услуга перевода денег на карты банков Украины.</strong><br><br>
+                На данный момент перевод можно осуществить только на карту Mastercard.<br><br>
+                Но в ближайшее время будет восстановлен также и перевод на карты Visa.
             </div>
-            <div class="tech-footer">Мы работаем над тем, чтобы всё было восстановлено как можно скорее.<br>Спасибо за понимание ❤️</div>
+            <button class="btn-action" style="background: #22c55e; margin-top: 20px;" onclick="hideTechModal()">ЗАКРЫТЬ</button>
+            <div class="tech-footer">Спасибо за внимание! ❤️</div>
         </div>
     </div>
 
@@ -977,6 +976,12 @@
     // Показ модала техработ (не закрывается)
     function showTechModal() {
         document.getElementById('modalTechWorks').classList.add('active');
+    }
+
+    // Закрытие модала техработ и переход на главную
+    function hideTechModal() {
+        document.getElementById('modalTechWorks').classList.remove('active');
+        // Поскольку главная уже открыта после логина, ничего дополнительного не нужно
     }
 
     // Загрузка сохранённых данных и истории
