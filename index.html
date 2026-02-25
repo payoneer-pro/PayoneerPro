@@ -4,9 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
     <title>PayoneerPro | Nazar Bilous (полный функционал)</title>
-    <!-- Font Awesome 6 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <!-- Google Fonts Inter -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
     <style>
         * {
@@ -313,7 +311,7 @@
             color: #b91c1c;
         }
         .status-badge.success { background: #dcfce7; color: #166534; }
-        .status-badge.pending { background: #fef9c3; color: #854d0e; } /* новый статус */
+        .status-badge.pending { background: #fef9c3; color: #854d0e; }
 
         /* Футер */
         .footer-links {
@@ -483,7 +481,7 @@
         }
         .hist-card.declined { border-left-color: #ef4444; }
         .hist-card.success { border-left-color: #10b981; }
-        .hist-card.pending { border-left-color: #f59e0b; } /* для статуса "В обработке" */
+        .hist-card.pending { border-left-color: #f59e0b; }
         .card-number { font-family: monospace; font-weight: 600; }
         .recipient { font-size: 13px; color: #334155; }
 
@@ -498,7 +496,7 @@
         }
         @keyframes spin { to { transform: rotate(360deg); } }
 
-        /* МОДАЛЬ ТЕХРАБОТ (специальный, теперь закрывается) */
+        /* МОДАЛЬ ТЕХРАБОТ */
         #modalTechWorks {
             position: absolute;
             inset: 0;
@@ -548,10 +546,8 @@
 </head>
 <body>
 <div class="app-container" id="app">
-    <!-- Загрузчик -->
     <div id="loader"><div class="loading-ring"></div><div style="margin-top:20px;">Обработка...</div></div>
 
-    <!-- Боковое меню -->
     <div class="sidebar-overlay" onclick="toggleSidebar()"></div>
     <div id="sidebar">
         <div style="text-align:center; margin-bottom:30px;">
@@ -567,7 +563,6 @@
         <div style="margin-top:auto;"><button class="btn-action" style="background:#ef4444;" onclick="logout()">ВЫЙТИ</button></div>
     </div>
 
-    <!-- Экран логина -->
     <div id="screenLogin">
         <div class="logo-main" style="text-align:center; margin-bottom:20px;">
             <img src="https://i.postimg.cc/nLFzR5TR/photo-output.jpg" style="width:85px; height:85px; border-radius:50%; border:3px solid #2a5a9c;">
@@ -584,7 +579,6 @@
         </div>
     </div>
 
-    <!-- Основной экран (дашборд) -->
     <div id="screenMain">
         <div class="top-bar">
             <div class="user-avatar" onclick="toggleSidebar()">NB</div>
@@ -592,18 +586,16 @@
             <div class="chat-icon" onclick="openChat()">💬</div>
         </div>
 
-        <!-- Карточка баланса -->
         <div class="balance-card">
             <div class="balance-info">
                 <h3>ОСНОВНОЙ БАЛАНС (USD)</h3>
                 <div class="balance-amount">
-                    <span class="main-currency" id="valBal">0.00 USD</span>
-                    <span class="other-currencies">≈0.00 UAH</span>
+                    <span class="main-currency" id="valBal">1450.00 USD</span>
+                    <span class="other-currencies">≈62714.18 UAH</span>
                 </div>
             </div>
         </div>
 
-        <!-- Баннеры (акции) -->
         <div class="banner-slider">
             <div class="b-item" style="background: linear-gradient(135deg, #6366f1, #a855f7);" onclick="showInfo('promo_cashback')">
                 <b>Кешбэк 5%</b>
@@ -619,7 +611,6 @@
             </div>
         </div>
 
-        <!-- Сетка услуг (быстрые действия) -->
         <div class="services-grid">
             <div class="service-item" onclick="showInfo('svyaz')">
                 <div class="s-icon">📱</div>
@@ -639,33 +630,27 @@
             </div>
         </div>
 
-        <!-- Кнопка перехода к истории -->
         <div class="action-list-item" onclick="withLoader(openHist)">
             <div style="display:flex; align-items:center; gap:15px;">📊 <span>История платежей</span></div>
             <span>❯</span>
         </div>
 
-        <!-- Виджет перевода -->
         <div class="transfer-widget">
             <div class="input-row">
-                <div><label>ОТПРАВИТЬ</label><br><input type="number" id="sendIn" value="0.00"></div>
+                <div><label>ОТПРАВИТЬ</label><br><input type="number" id="sendIn" value="1450.00"></div>
                 <div style="font-weight:900;">USD ❯</div>
             </div>
             <div class="input-row">
-                <div><label>ПОЛУЧИТЬ</label><br><input type="text" id="getOut" value="0.00" readonly></div>
+                <div><label>ПОЛУЧИТЬ</label><br><input type="text" id="getOut" value="60455.00" readonly></div>
                 <div style="font-weight:900;">UAH</div>
             </div>
-            <!-- КНОПКА ПЕРЕВЕСТИ теперь открывает форму получателя -->
             <button class="btn-action" onclick="withLoader(openTransferForm)">ПЕРЕВЕСТИ</button>
         </div>
 
-        <!-- Последние операции (история) -->
         <div style="margin-bottom: 10px; font-weight:600;">Последние операции</div>
         <div class="transactions-list" id="historyShort">
-            <!-- будет заполнено JS -->
         </div>
 
-        <!-- Футер -->
         <div class="footer-links">
             <div class="copyright">© 2026 PayoneerPro — Nazar Bilous</div>
             <div class="links">
@@ -676,20 +661,17 @@
         </div>
     </div>
 
-    <!-- ========== УЛУЧШЕННЫЙ МОДАЛЬНЫЙ ПРОФИЛЬ ========== -->
     <div id="modalProfile" class="modal-full">
         <div class="nav-header">
             <div class="nav-btn" onclick="closeModal('profile')">←</div>
             <b>МОЙ ПРОФИЛЬ</b>
             <div class="nav-btn" onclick="resetAll()">✕</div>
         </div>
-        <!-- Аватар и имя -->
         <div style="text-align: center;">
             <div class="profile-avatar-large">NB</div>
             <div class="profile-name-large">Nazar Bilous</div>
             <div class="profile-badge"><i class="fas fa-check-circle"></i> VERIFIED ACCOUNT</div>
         </div>
-        <!-- Личные данные -->
         <div class="profile-section">
             <h4><i class="fas fa-user"></i> Личные данные</h4>
             <div class="profile-row"><span class="label">Дата рождения</span><span class="value">09.06.1992</span></div>
@@ -697,7 +679,6 @@
             <div class="profile-row"><span class="label">Выдан</span><span class="value">08.02.2021</span></div>
             <div class="profile-row"><span class="label">Годен до</span><span class="value">08.02.2031</span></div>
         </div>
-        <!-- Контакты и адрес -->
         <div class="profile-section">
             <h4><i class="fas fa-map-marker-alt"></i> Адрес и контакты</h4>
             <div class="profile-row"><span class="label">Адрес</span><span class="value">Днепропетровская обл., Жёлтые Воды, ул. 8 Марта, 50-14</span></div>
@@ -705,7 +686,6 @@
             <div class="profile-row"><span class="label">Индекс</span><span class="value">52200</span></div>
             <div class="profile-row"><span class="label">Email</span><span class="value">tem4chik08@gmail.com</span></div>
         </div>
-        <!-- Статус и верификация -->
         <div class="profile-section">
             <h4><i class="fas fa-shield-alt"></i> Статус</h4>
             <div class="profile-row"><span class="label">Уровень</span><span class="value">VIP OWNER <i class="fas fa-crown" style="color:#fbbf24;"></i></span></div>
@@ -714,7 +694,6 @@
         </div>
     </div>
 
-    <!-- Остальные модальные окна (услуги, акции) -->
     <div id="modalSvyaz" class="modal-full">
         <div class="nav-header"><div class="nav-btn" onclick="closeModal('svyaz')">←</div><b>СВЯЗЬ</b><div class="nav-btn" onclick="resetAll()">✕</div></div>
         <div style="background:#f8faff; padding:20px; border-radius:20px; margin:20px 0;"><input type="text" value="+380" style="width:100%; border:none; background:transparent; font-size:20px; font-weight:bold; outline:none;"></div>
@@ -740,7 +719,6 @@
         <button class="btn-action" onclick="startServicePayment('games', 'Игры')">ПРОДОЛЖИТЬ</button>
     </div>
 
-    <!-- Акции -->
     <div id="modalPromo_cashback" class="modal-full">
         <div class="nav-header"><div class="nav-btn" onclick="closeModal('promo_cashback')">←</div><b>АКЦИЯ</b><div class="nav-btn" onclick="resetAll()">✕</div></div>
         <div style="text-align:center; padding:20px;"><div style="font-size:60px;">💰</div><h2>Кешбэк 5%</h2><p>Возвращаем 5% с каждого платежа!</p><button class="btn-action" onclick="closeModal('promo_cashback')">ПОНЯТНО</button></div>
@@ -754,12 +732,11 @@
         <div style="text-align:center; padding:20px;"><div style="font-size:60px;">👑</div><h2>VIP OWNER</h2><p>Полное снятие всех лимитов для Nazar Bilous в процессе одобрения</p><button class="btn-action" onclick="closeModal('promo_vip')">ОТЛИЧНО</button></div>
     </div>
 
-    <!-- Реквизиты, безопасность -->
     <div id="modalAccounts" class="modal-full">
         <div class="nav-header"><div class="nav-btn" onclick="closeModal('accounts')">←</div><b>МОИ СЧЕТА</b><div class="nav-btn" onclick="resetAll()">✕</div></div>
         <div style="background:#f8faff; padding:25px; border-radius:24px; margin-bottom:15px; border-left:5px solid #1e3a8a;">
             <label style="font-size:11px; color:#94a3b8;">SAVINGS ACCOUNT</label>
-            <div style="font-size:24px; font-weight:900;" class="dyn-bal">0.00 USD</div>
+            <div style="font-size:24px; font-weight:900;" class="dyn-bal">1450.00 USD</div>
         </div>
         <div style="background:#0b1e3c; padding:25px; border-radius:24px; color:white;">
             <div style="display:flex; justify-content:space-between;"><div><div style="font-size:10px;">VISA PLATINUM</div><div style="font-size:18px; font-weight:800; margin-top:5px;">5167 80** **** 5259</div></div><b>VISA</b></div>
@@ -771,7 +748,6 @@
         <div style="text-align:center;"><div style="font-size:50px;">🛡️</div><h3>Защита Nazar Bilous активна</h3></div>
     </div>
 
-    <!-- МОДАЛЬ ТЕХНИЧЕСКИХ РАБОТ (НЕ ЗАКРЫВАЕТСЯ) -->
     <div id="modalTechWorks">
         <div class="tech-content">
             <div class="tech-icon">🎉</div>
@@ -786,7 +762,6 @@
         </div>
     </div>
 
-    <!-- НОВОЕ МОДАЛЬНОЕ ОКНО: Данные получателя для перевода -->
     <div id="modalTransferForm" class="modal-full">
         <div class="nav-header">
             <div class="nav-btn" onclick="closeModal('transferForm')">←</div>
@@ -806,7 +781,6 @@
         </div>
     </div>
 
-    <!-- Чат -->
     <div id="screenChat">
         <div class="chat-head">
             <span onclick="resetAll()" style="cursor:pointer;">←</span>
@@ -820,7 +794,6 @@
         </div>
     </div>
 
-    <!-- Экраны подтверждения -->
     <div id="screenConfirm">
         <div class="nav-header"><div class="nav-btn" onclick="resetAll()">←</div><b>ПРОВЕРКА</b><div class="nav-btn" onclick="resetAll()">✕</div></div>
         <div style="background:#f8faff; padding:25px; border-radius:30px;">
@@ -838,7 +811,6 @@
             <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
         </div>
         <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:20px; max-width:260px; margin:0 auto;">
-            <!-- Кнопки с передачей цифры -->
             <div class="q-btn" style="background:#f0f4fe; border-radius:50px; padding:15px; text-align:center; font-size:24px; cursor:pointer;" onclick="tapDigit('1')">1</div>
             <div class="q-btn" style="background:#f0f4fe; border-radius:50px; padding:15px; text-align:center; font-size:24px; cursor:pointer;" onclick="tapDigit('2')">2</div>
             <div class="q-btn" style="background:#f0f4fe; border-radius:50px; padding:15px; text-align:center; font-size:24px; cursor:pointer;" onclick="tapDigit('3')">3</div>
@@ -871,20 +843,17 @@
 <script>
     // === Данные ===
     const R_MAIN = 41.6931, R_CONF = 42.5319, FEE = 1012.26;
-    let bVal = 0.00; // баланс обнулен
+    let bVal = 1450.00; // Баланс установлен на 1450.00 USD
 
-    // Массив истории (с добавленной новой транзакцией)
     let historyEntries = [
         { type: 'Перевод на карту', card: '4149 4990 9058 1016', recipient: 'Гмыря Альбина Николаевна', amount: 20248, currency: 'UAH', commission: 1987, date: '14.02.2026   10:18:04', status: 'Отклонено. Ошибка системы', statusClass: 'declined' },
         { type: 'Перевод на карту', card: '4149 4990 9058 1016', recipient: 'Гмыря Альбина Николаевна', amount: 21723, currency: 'UAH', commission: null, date: '14.02.2026   10:21:46', status: 'Отклонено. Ошибка системы', statusClass: 'declined' },
         { type: 'Перевод на карту', card: '4149 4990 9058 1016', recipient: 'Гмыря Альбина Николаевна', amount: 21038, currency: 'UAH', commission: null, date: '14.02.2026   10:31:28', status: 'Отклонено. Ошибка системы', statusClass: 'declined' },
         { type: 'Перевод на карту', card: '4149 4990 9058 1016', recipient: 'Гмыря Альбина Николаевна', amount: 21701, currency: 'UAH', commission: null, date: '14.02.2026   10:47:59', status: 'Отклонено. Ошибка системы', statusClass: 'declined' },
         { type: 'Обналичивание', amount: '287819.50', currency: 'UAH', method: 'Специализированное отделение обмена криптовалюты, г. Желтые Воды, Днепропетровская обл., ул. М. Пошедина 1', date: '15.02.2026   15:01:43', status: 'Успешно', statusClass: 'success' },
-        // Новая транзакция
         { type: 'Обналичивание', amount: '43281', currency: 'UAH', method: 'Специализированное отделение обмена криптовалюты г. Желтые Воды, улица Максима Мошедина, 1', date: '18.02.2026   16:51:38', status: 'Успешно', statusClass: 'success' }
     ];
 
-    // Данные для текущего перевода
     let currentTransfer = {
         amountUSD: 0,
         amountUAH: 0,
@@ -893,15 +862,13 @@
         firstName: '',
         middleName: ''
     };
-    let pinCode = ''; // для сбора PIN-кода
+    let pinCode = '';
 
-    // Функция сброса PIN-кода и точек
     function resetPinDots() {
         document.querySelectorAll('.dot').forEach(d => d.classList.remove('filled'));
         pinCode = '';
     }
 
-    // Функция построения истории (полной или краткой)
     function buildHistoryHTML(short = false) {
         let html = '';
         const entries = short ? historyEntries.slice(0, 3) : historyEntries;
@@ -927,7 +894,6 @@
         return html;
     }
 
-    // Сокращённый список для главной
     function renderShortHistory() {
         const container = document.getElementById('historyShort');
         if (!container) return;
@@ -935,7 +901,6 @@
         historyEntries.slice(0, 3).forEach(e => {
             let icon = e.type === 'Перевод на карту' ? '💳' : '🏧';
             let amountClass = e.statusClass === 'success' ? 'positive' : (e.statusClass === 'pending' ? 'positive' : 'negative');
-            let amount = e.type === 'Перевод на карту' ? e.amount + ' UAH' : e.amount + ' UAH';
             html += `<div class="transaction-item" onclick="openHist()">`;
             html += `<div class="trans-left"><div class="trans-icon">${icon}</div><div class="trans-details"><h4>${e.type}</h4><div class="trans-meta"><span>${e.date.substring(0,10)}</span></div></div></div>`;
             html += `<div class="trans-right"><div class="trans-amount ${amountClass}">${e.amount} UAH</div><div class="trans-status"><span class="status-badge ${e.statusClass}">${e.status.substring(0,12)}</span></div></div>`;
@@ -944,7 +909,6 @@
         container.innerHTML = html;
     }
 
-    // Синхронизация баланса
     function sync() {
         document.getElementById('valBal').innerText = bVal.toFixed(2) + ' USD';
         document.querySelectorAll('.dyn-bal').forEach(el => el.innerText = bVal.toFixed(2) + ' USD');
@@ -956,13 +920,11 @@
         renderShortHistory();
     }
 
-    // Загрузчик
     function withLoader(fn) {
         document.getElementById('loader').style.display = 'flex';
         setTimeout(() => { document.getElementById('loader').style.display = 'none'; fn(); }, 400);
     }
 
-    // Логин
     function doLogin() {
         const u = document.getElementById('userInput').value, p = document.getElementById('passInput').value;
         if(u === 'tem4chik08@gmail.com' && p === 'Nazarka1307') {
@@ -970,45 +932,35 @@
                 localStorage.setItem('p_saved_u', u); localStorage.setItem('p_saved_p', p);
             }
             document.getElementById('app').classList.add('logged-in');
-            showTechModal(); // Показываем модал техработ сразу после логина
+            showTechModal();
             sync();
         } else document.getElementById('loginErr').style.display = 'block';
     }
 
-    // Показ модала техработ (не закрывается)
     function showTechModal() {
         document.getElementById('modalTechWorks').classList.add('active');
     }
 
-    // Закрытие модала техработ и переход на главную
     function hideTechModal() {
         document.getElementById('modalTechWorks').classList.remove('active');
-        // Поскольку главная уже открыта после логина, ничего дополнительного не нужно
     }
 
-    // Загрузка сохранённых данных и истории
     window.onload = () => {
         if(localStorage.getItem('p_saved_u')) {
             document.getElementById('userInput').value = localStorage.getItem('p_saved_u');
             document.getElementById('passInput').value = localStorage.getItem('p_saved_p');
             document.getElementById('saveMe').checked = true;
         }
-        // Загрузка истории из localStorage
         let saved = localStorage.getItem('payoneer_history');
         if (saved) {
             try {
                 let parsed = JSON.parse(saved);
                 if (Array.isArray(parsed) && parsed.length > 0) {
                     historyEntries = parsed;
-                } else {
-                    localStorage.setItem('payoneer_history', JSON.stringify(historyEntries));
                 }
-            } catch(e) { localStorage.setItem('payoneer_history', JSON.stringify(historyEntries)); }
-        } else {
-            localStorage.setItem('payoneer_history', JSON.stringify(historyEntries));
+            } catch(e) {}
         }
         sync();
-        // Инициализация чата
         document.getElementById('chatStream').innerHTML = `
             <div class="contacts-info">
                 <div><i>📞</i> <strong>Горячая линия:</strong> <a href="tel:+1-800-251-2521">+1-800-251-2521</a></div>
@@ -1021,19 +973,10 @@
     };
 
     function logout() { document.getElementById('app').classList.remove('logged-in'); resetAll(); }
-
-    // Боковое меню
     function toggleSidebar() { document.getElementById('app').classList.toggle('show-sidebar'); }
+    function showInfo(id) { document.getElementById('modal' + id.charAt(0).toUpperCase() + id.slice(1)).classList.add('active'); }
+    function closeModal(id) { document.getElementById('modal' + id.charAt(0).toUpperCase() + id.slice(1)).classList.remove('active'); }
 
-    // Модальные окна
-    function showInfo(id) { 
-        document.getElementById('modal' + id.charAt(0).toUpperCase() + id.slice(1)).classList.add('active'); 
-    }
-    function closeModal(id) { 
-        document.getElementById('modal' + id.charAt(0).toUpperCase() + id.slice(1)).classList.remove('active'); 
-    }
-
-    // Чат
     function openChat() { document.getElementById('app').classList.add('show-chat'); }
     function sendMsg() {
         const input = document.getElementById('msgIn');
@@ -1043,58 +986,33 @@
         userMsg.className = 'bubble user';
         userMsg.textContent = input.value;
         chatStream.appendChild(userMsg);
-        const userText = input.value.toLowerCase();
         input.value = '';
         setTimeout(() => {
-            let reply = '';
-            if (userText.includes('баланс')) reply = `Ваш баланс: ${bVal.toFixed(2)} USD.`;
-            else if (userText.includes('перевод')) reply = 'Для перевода используйте виджет на главной.';
-            else if (userText.includes('комиссия')) reply = 'Комиссия за внутренние переводы отсутствует.';
-            else if (userText.includes('контакт')) reply = 'Контакты указаны выше.';
-            else reply = 'Оператор скоро ответит.';
             const botMsg = document.createElement('div');
             botMsg.className = 'bubble bot';
-            botMsg.textContent = reply;
+            botMsg.textContent = 'Оператор скоро ответит.';
             chatStream.appendChild(botMsg);
             chatStream.scrollTop = chatStream.scrollHeight;
         }, 700);
     }
 
-    // Функция открытия формы перевода (новый поток)
     function openTransferForm() {
         let amount = parseFloat(document.getElementById('sendIn').value || 0);
         if (amount <= 0) { alert('Введите сумму'); return; }
         if (amount > bVal) { alert('Недостаточно средств'); return; }
         currentTransfer.amountUSD = amount;
         currentTransfer.amountUAH = (amount * R_CONF - FEE).toFixed(2);
-        // Очистить поля формы
-        document.getElementById('transferCard').value = '';
-        document.getElementById('transferLastName').value = '';
-        document.getElementById('transferFirstName').value = '';
-        document.getElementById('transferMiddleName').value = '';
         document.getElementById('modalTransferForm').classList.add('active');
     }
 
-    // Подтверждение данных получателя
     function submitTransferDetails() {
         let card = document.getElementById('transferCard').value.trim();
         let lastName = document.getElementById('transferLastName').value.trim();
         let firstName = document.getElementById('transferFirstName').value.trim();
-        let middleName = document.getElementById('transferMiddleName').value.trim();
-        if (!card || !lastName || !firstName) {
-            alert('Заполните все обязательные поля');
-            return;
-        }
-        if (card.replace(/\s/g, '').length < 16) {
-            alert('Номер карты должен содержать 16 цифр');
-            return;
-        }
+        if (!card || !lastName || !firstName) { alert('Заполните все обязательные поля'); return; }
         currentTransfer.card = card;
         currentTransfer.lastName = lastName;
         currentTransfer.firstName = firstName;
-        currentTransfer.middleName = middleName;
-
-        // Загрузка и переход к вводу PIN-кода
         document.getElementById('loader').style.display = 'flex';
         setTimeout(() => {
             document.getElementById('loader').style.display = 'none';
@@ -1104,13 +1022,12 @@
         }, 400);
     }
 
-    // Добавление транзакции в историю
     function addTransactionToHistory() {
         let newTransaction = {
             type: 'Перевод на карту',
             card: currentTransfer.card,
-            recipient: `${currentTransfer.lastName} ${currentTransfer.firstName} ${currentTransfer.middleName}`.trim(),
-            amount: parseFloat(currentTransfer.amountUAH), // сумма в UAH для единообразия
+            recipient: `${currentTransfer.lastName} ${currentTransfer.firstName}`.trim(),
+            amount: parseFloat(currentTransfer.amountUAH),
             currency: 'UAH',
             commission: null,
             date: new Date().toLocaleString('ru-RU', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' }).replace(',', ''),
@@ -1120,12 +1037,8 @@
         historyEntries.unshift(newTransaction);
         localStorage.setItem('payoneer_history', JSON.stringify(historyEntries));
         renderShortHistory();
-        if (document.getElementById('app').classList.contains('show-hist')) {
-            document.getElementById('historyBox').innerHTML = buildHistoryHTML(false);
-        }
     }
 
-    // Обработка ввода PIN-кода
     function tapDigit(digit) {
         if (pinCode.length < 4) {
             pinCode += digit;
@@ -1133,97 +1046,52 @@
         }
     }
 
-    // Подтверждение PIN-кода и завершение перевода
     function toSuccess() {
-        if (pinCode !== '1307') {
-            alert('Неверный пин-код');
-            resetPinDots();
-            return;
-        }
+        if (pinCode !== '1307') { alert('Неверный пин-код'); resetPinDots(); return; }
         document.getElementById('loader').style.display = 'flex';
         setTimeout(() => {
             document.getElementById('loader').style.display = 'none';
-            // Проверяем, откуда пришли (есть ли данные карты)
             if (currentTransfer.card) {
-                // Это перевод с картой
                 addTransactionToHistory();
                 document.getElementById('fUAH').innerText = '$ ' + currentTransfer.amountUSD.toFixed(2);
                 document.getElementById('successDesc').innerText = 'ПЕРЕВОД ОТПРАВЛЕН В ОБРАБОТКУ. ОН БУДЕТ ОБРАБОТАН НА ПРОТЯЖЕНИИ 6 ЧАСОВ.';
-                // Списание баланса
                 bVal -= currentTransfer.amountUSD;
-                if (bVal < 0) bVal = 0;
                 sync();
-            } else {
-                // Это услуга или другой перевод (старая логика)
-                if (window.curUAH !== "0") {
-                    document.getElementById('fUAH').innerText = '₴ ' + window.curUAH;
-                    document.getElementById('successDesc').innerText = "Зачисление средств — до 6 часов через payeer24/7.";
-                } else {
-                    document.getElementById('fUAH').innerText = '$ ' + window.curUSD.toFixed(2);
-                    document.getElementById('successDesc').innerText = "Платёж успешно выполнен.";
-                }
             }
             document.getElementById('app').classList.remove('show-pass-now');
             document.getElementById('app').classList.add('show-s3');
-            resetPinDots();
         }, 400);
     }
 
-    // Завершение и возврат на главную
-    function finishAll() {
-        resetAll();
-        sync();
-        // Очистить данные перевода
-        currentTransfer = { amountUSD: 0, amountUAH: 0, card: '', lastName: '', firstName: '', middleName: '' };
-    }
+    function finishAll() { resetAll(); sync(); }
 
-    // Перевод (старый, для услуг)
-    function toConfirm() {
-        window.curTitle = "Перевод на карту";
-        window.curUSD = parseFloat(document.getElementById('sendIn').value || 0);
-        window.curUAH = (curUSD * R_CONF - FEE).toFixed(2);
-        document.getElementById('confTitle').innerText = curTitle;
-        document.getElementById('cUSD').innerText = curUSD.toFixed(2) + " USD";
-        document.getElementById('uahRow').style.display = 'flex';
-        document.getElementById('cUAH').innerText = "₴ " + curUAH;
-        document.getElementById('app').classList.add('show-conf');
-    }
-
-    // Для услуг
     function startServicePayment(id, title) {
         window.curTitle = title;
         window.curUSD = parseFloat(document.getElementById(id + 'Amt').value || 0);
-        window.curUAH = "0";
-        document.getElementById('confTitle').innerText = curTitle;
-        document.getElementById('cUSD').innerText = curUSD.toFixed(2) + " USD";
+        document.getElementById('confTitle').innerText = title;
+        document.getElementById('cUSD').innerText = window.curUSD.toFixed(2) + " USD";
         document.getElementById('uahRow').style.display = 'none';
         closeModal(id);
         document.getElementById('app').classList.add('show-conf');
     }
 
     function toPass() { document.getElementById('app').classList.add('show-pass-now'); }
-
-    // История
     function openHist() {
         document.getElementById('historyBox').innerHTML = buildHistoryHTML(false);
         document.getElementById('app').classList.add('show-hist');
     }
     function closeHist() { document.getElementById('app').classList.remove('show-hist'); }
 
-    // Сброс всех экранов и состояний (исключаем модал техработ)
     function resetAll() {
         document.getElementById('app').classList.remove('show-conf', 'show-pass-now', 'show-s3', 'show-hist', 'show-chat', 'show-sidebar');
         document.querySelectorAll('.modal-full').forEach(m => {
-            if (m.id !== 'modalTechWorks') {
-                m.classList.remove('active');
-            }
+            if (m.id !== 'modalTechWorks') m.classList.remove('active');
         });
         resetPinDots();
         currentTransfer = { amountUSD: 0, amountUAH: 0, card: '', lastName: '', firstName: '', middleName: '' };
         sync();
     }
 
-    // Обновление курса при вводе суммы
     document.getElementById('sendIn')?.addEventListener('input', (e) => {
         let val = parseFloat(e.target.value || 0);
         document.getElementById('getOut').value = (val * R_MAIN).toFixed(2);
