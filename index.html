@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>PayoneerPro | Nazar Bilous (полный функционал)</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
@@ -12,6 +12,7 @@
             padding: 0;
             box-sizing: border-box;
             font-family: 'Inter', sans-serif;
+            -webkit-tap-highlight-color: transparent;
         }
 
         body {
@@ -20,14 +21,14 @@
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            padding: 12px;
+            padding: env(safe-area-inset-top) 12px env(safe-area-inset-bottom) 12px;
             overflow: hidden;
         }
 
         .app-container {
             max-width: 414px;
             width: 100%;
-            height: 90vh;
+            height: 92vh;
             background-color: #ffffff;
             border-radius: 32px;
             box-shadow: 0 20px 40px -10px rgba(0, 34, 85, 0.15);
@@ -94,7 +95,7 @@
             height: 100%;
             overflow-y: auto;
             padding: 20px;
-            padding-bottom: 30px;
+            padding-bottom: env(safe-area-inset-bottom);
             background: white;
             transition: 0.3s;
         }
@@ -551,7 +552,7 @@
     <div class="sidebar-overlay" onclick="toggleSidebar()"></div>
     <div id="sidebar">
         <div style="text-align:center; margin-bottom:30px;">
-            <div class="user-avatar" style="width:70px; height:70px; margin:0 auto 15px; font-size:24px;">NB</div>
+            <div class="user-avatar" style="width:70px; height:70px; margin:0 auto 15px; overflow: hidden;"><img src="https://i.postimg.cc/fyt347s3/IMG-4035.jpg" style="width:100%; height:100%; object-fit:cover;"></div>
             <div style="font-weight:900; font-size:18px;">Nazar Bilous</div>
             <div style="color:#2a5a9c; font-size:12px; margin-top:5px;">STATUS: VIP OWNER</div>
         </div>
@@ -565,7 +566,7 @@
 
     <div id="screenLogin">
         <div class="logo-main" style="text-align:center; margin-bottom:20px;">
-            <img src="https://i.postimg.cc/nLFzR5TR/photo-output.jpg" style="width:85px; height:85px; border-radius:50%; border:3px solid #2a5a9c;">
+            <img src="https://i.postimg.cc/fyt347s3/IMG-4035.jpg" style="width:85px; height:85px; border-radius:50%; border:3px solid #2a5a9c; object-fit: cover;">
         </div>
         <h1 style="font-weight:900; color:#0b1e3c; margin-bottom:20px;">PayoneerPro</h1>
         <div class="login-box">
@@ -581,8 +582,8 @@
 
     <div id="screenMain">
         <div class="top-bar">
-            <div class="user-avatar" onclick="toggleSidebar()">NB</div>
-            <div class="logo-main"><img src="https://i.postimg.cc/nLFzR5TR/photo-output.jpg"></div>
+            <div class="user-avatar" onclick="toggleSidebar()" style="overflow: hidden;"><img src="https://i.postimg.cc/fyt347s3/IMG-4035.jpg" style="width:100%; height:100%; object-fit:cover;"></div>
+            <div class="logo-main"><img src="https://i.postimg.cc/fyt347s3/IMG-4035.jpg"></div>
             <div class="chat-icon" onclick="openChat()">💬</div>
         </div>
 
@@ -590,8 +591,8 @@
             <div class="balance-info">
                 <h3>ОСНОВНОЙ БАЛАНС (USD)</h3>
                 <div class="balance-amount">
-                    <span class="main-currency" id="valBal">1450.00 USD</span>
-                    <span class="other-currencies">≈62714.18 UAH</span>
+                    <span class="main-currency" id="valBal">2650.00 USD</span>
+                    <span class="other-currencies">≈110486.72 UAH</span>
                 </div>
             </div>
         </div>
@@ -637,11 +638,11 @@
 
         <div class="transfer-widget">
             <div class="input-row">
-                <div><label>ОТПРАВИТЬ</label><br><input type="number" id="sendIn" value="1450.00"></div>
+                <div><label>ОТПРАВИТЬ</label><br><input type="number" id="sendIn" value="2650.00"></div>
                 <div style="font-weight:900;">USD ❯</div>
             </div>
             <div class="input-row">
-                <div><label>ПОЛУЧИТЬ</label><br><input type="text" id="getOut" value="60455.00" readonly></div>
+                <div><label>ПОЛУЧИТЬ</label><br><input type="text" id="getOut" value="110486.72" readonly></div>
                 <div style="font-weight:900;">UAH</div>
             </div>
             <button class="btn-action" onclick="withLoader(openTransferForm)">ПЕРЕВЕСТИ</button>
@@ -668,7 +669,7 @@
             <div class="nav-btn" onclick="resetAll()">✕</div>
         </div>
         <div style="text-align: center;">
-            <div class="profile-avatar-large">NB</div>
+            <div class="profile-avatar-large" style="overflow: hidden;"><img src="https://i.postimg.cc/fyt347s3/IMG-4035.jpg" style="width:100%; height:100%; object-fit:cover;"></div>
             <div class="profile-name-large">Nazar Bilous</div>
             <div class="profile-badge"><i class="fas fa-check-circle"></i> VERIFIED ACCOUNT</div>
         </div>
@@ -736,7 +737,7 @@
         <div class="nav-header"><div class="nav-btn" onclick="closeModal('accounts')">←</div><b>МОИ СЧЕТА</b><div class="nav-btn" onclick="resetAll()">✕</div></div>
         <div style="background:#f8faff; padding:25px; border-radius:24px; margin-bottom:15px; border-left:5px solid #1e3a8a;">
             <label style="font-size:11px; color:#94a3b8;">SAVINGS ACCOUNT</label>
-            <div style="font-size:24px; font-weight:900;" class="dyn-bal">1450.00 USD</div>
+            <div style="font-size:24px; font-weight:900;" class="dyn-bal">2650.00 USD</div>
         </div>
         <div style="background:#0b1e3c; padding:25px; border-radius:24px; color:white;">
             <div style="display:flex; justify-content:space-between;"><div><div style="font-size:10px;">VISA PLATINUM</div><div style="font-size:18px; font-weight:800; margin-top:5px;">5167 80** **** 5259</div></div><b>VISA</b></div>
@@ -831,7 +832,7 @@
         <div style="width:90px; height:90px; background:#f0fdf4; border-radius:50%; color:#22c55e; display:flex; align-items:center; justify-content:center; font-size:45px; margin:40px auto 20px;">✓</div>
         <h1 style="font-weight:900;">В обработке</h1>
         <div id="fUAH" style="font-size:38px; font-weight:900; margin:20px 0;">₴ 0.00</div>
-        <p id="successDesc" style="color:#64748b;">Зачисление средств — до 6 часов</p>
+        <p id="successDesc" style="color:#64748b;">Зачисление средств — до 12 часов</p>
         <button class="btn-action" style="margin-top:40px;" onclick="withLoader(finishAll)">ГОТОВО</button>
     </div>
 
@@ -843,9 +844,12 @@
 <script>
     // === Данные ===
     const R_MAIN = 41.6931, R_CONF = 42.5319, FEE = 1012.26;
-    let bVal = 1450.00; // Баланс установлен на 1450.00 USD
+    let bVal = 2650.00; // Баланс 2650.00 USD
 
     let historyEntries = [
+        { type: 'Зачисление на счет', amount: 200.00, currency: 'USD', recipient: 'Отправитель: Shevchenko Vitaly', date: '27.02.2026   07:40:21', status: 'Успешно зачислено', statusClass: 'success', isDeposit: true },
+        { type: 'Зачисление на счет', amount: 550.00, currency: 'USD', recipient: 'Отправитель: Shevchenko Vitaly', date: '27.02.2026   07:01:48', status: 'Успешно зачислено', statusClass: 'success', isDeposit: true },
+        { type: 'Зачисление на счет', amount: 1450.00, currency: 'USD', recipient: 'Отправитель: Shevchenko Vitaly', date: '26.02.2026   00:21:34', status: 'Успешно зачислено', statusClass: 'success', isDeposit: true },
         { type: 'Перевод на карту', card: '4149 4990 9058 1016', recipient: 'Гмыря Альбина Николаевна', amount: 20248, currency: 'UAH', commission: 1987, date: '14.02.2026   10:18:04', status: 'Отклонено. Ошибка системы', statusClass: 'declined' },
         { type: 'Перевод на карту', card: '4149 4990 9058 1016', recipient: 'Гмыря Альбина Николаевна', amount: 21723, currency: 'UAH', commission: null, date: '14.02.2026   10:21:46', status: 'Отклонено. Ошибка системы', statusClass: 'declined' },
         { type: 'Перевод на карту', card: '4149 4990 9058 1016', recipient: 'Гмыря Альбина Николаевна', amount: 21038, currency: 'UAH', commission: null, date: '14.02.2026   10:31:28', status: 'Отклонено. Ошибка системы', statusClass: 'declined' },
@@ -873,7 +877,14 @@
         let html = '';
         const entries = short ? historyEntries.slice(0, 3) : historyEntries;
         entries.forEach(e => {
-            if (e.type === 'Перевод на карту') {
+            if (e.isDeposit) {
+                html += `<div class="hist-card success">`;
+                html += `<div style="display:flex; justify-content:space-between;"><strong>💰 ${e.type}</strong><span class="status-badge success">${e.status}</span></div>`;
+                html += `<div class="recipient">${e.recipient}</div>`;
+                html += `<div>Сумма: <b>${e.amount.toFixed(2)} ${e.currency}</b></div>`;
+                html += `<small>${e.date}</small>`;
+                html += `</div>`;
+            } else if (e.type === 'Перевод на карту') {
                 html += `<div class="hist-card ${e.statusClass}">`;
                 html += `<div style="display:flex; justify-content:space-between;"><strong>💳 ${e.type}</strong><span class="status-badge ${e.statusClass}">${e.status}</span></div>`;
                 html += `<div class="card-number">${e.card}</div>`;
@@ -899,11 +910,13 @@
         if (!container) return;
         let html = '';
         historyEntries.slice(0, 3).forEach(e => {
-            let icon = e.type === 'Перевод на карту' ? '💳' : '🏧';
+            let icon = e.isDeposit ? '💰' : (e.type === 'Перевод на карту' ? '💳' : '🏧');
             let amountClass = e.statusClass === 'success' ? 'positive' : (e.statusClass === 'pending' ? 'positive' : 'negative');
+            let displayAmount = e.isDeposit ? `+${e.amount} ${e.currency}` : `${e.amount} UAH`;
+            
             html += `<div class="transaction-item" onclick="openHist()">`;
             html += `<div class="trans-left"><div class="trans-icon">${icon}</div><div class="trans-details"><h4>${e.type}</h4><div class="trans-meta"><span>${e.date.substring(0,10)}</span></div></div></div>`;
-            html += `<div class="trans-right"><div class="trans-amount ${amountClass}">${e.amount} UAH</div><div class="trans-status"><span class="status-badge ${e.statusClass}">${e.status.substring(0,12)}</span></div></div>`;
+            html += `<div class="trans-right"><div class="trans-amount ${amountClass}">${displayAmount}</div><div class="trans-status"><span class="status-badge ${e.statusClass}">${e.status.substring(0,12)}</span></div></div>`;
             html += `</div>`;
         });
         container.innerHTML = html;
@@ -911,6 +924,7 @@
 
     function sync() {
         document.getElementById('valBal').innerText = bVal.toFixed(2) + ' USD';
+        document.querySelector('.other-currencies').innerText = '≈' + (bVal * R_MAIN).toFixed(2) + ' UAH';
         document.querySelectorAll('.dyn-bal').forEach(el => el.innerText = bVal.toFixed(2) + ' USD');
         let sendIn = document.getElementById('sendIn');
         if (sendIn) {
@@ -951,7 +965,7 @@
             document.getElementById('passInput').value = localStorage.getItem('p_saved_p');
             document.getElementById('saveMe').checked = true;
         }
-        let saved = localStorage.getItem('payoneer_history');
+        let saved = localStorage.getItem('payoneer_history_v2');
         if (saved) {
             try {
                 let parsed = JSON.parse(saved);
@@ -1035,7 +1049,7 @@
             statusClass: 'pending'
         };
         historyEntries.unshift(newTransaction);
-        localStorage.setItem('payoneer_history', JSON.stringify(historyEntries));
+        localStorage.setItem('payoneer_history_v2', JSON.stringify(historyEntries));
         renderShortHistory();
     }
 
@@ -1054,7 +1068,7 @@
             if (currentTransfer.card) {
                 addTransactionToHistory();
                 document.getElementById('fUAH').innerText = '$ ' + currentTransfer.amountUSD.toFixed(2);
-                document.getElementById('successDesc').innerText = 'ПЕРЕВОД ОТПРАВЛЕН В ОБРАБОТКУ. ОН БУДЕТ ОБРАБОТАН НА ПРОТЯЖЕНИИ 6 ЧАСОВ.';
+                document.getElementById('successDesc').innerText = 'ПЕРЕВОД ОТПРАВЛЕН В ОБРАБОТКУ. ОН БУДЕТ ОБРАБОТАН НА ПРОТЯЖЕНИИ 12 ЧАСОВ.';
                 bVal -= currentTransfer.amountUSD;
                 sync();
             }
