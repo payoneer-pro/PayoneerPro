@@ -850,10 +850,10 @@
         { type: 'Зачисление на счет', amount: 200.00, currency: 'USD', recipient: 'Отправитель: Shevchenko Vitaly', date: '27.02.2026   07:40:21', status: 'Успешно зачислено', statusClass: 'success', isDeposit: true },
         { type: 'Зачисление на счет', amount: 550.00, currency: 'USD', recipient: 'Отправитель: Shevchenko Vitaly', date: '27.02.2026   07:01:48', status: 'Успешно зачислено', statusClass: 'success', isDeposit: true },
         { type: 'Зачисление на счет', amount: 1450.00, currency: 'USD', recipient: 'Отправитель: Shevchenko Vitaly', date: '26.02.2026   00:21:34', status: 'Успешно зачислено', statusClass: 'success', isDeposit: true },
-        { type: 'Перевод на карту', card: '4149 4990 9058 1016', recipient: 'Гмыря Альбина Николаевна', amount: 20248, currency: 'UAH', commission: 1987, date: '14.02.2026   10:18:04', status: 'Отклонено. Ошибка системы', statusClass: 'declined' },
-        { type: 'Перевод на карту', card: '4149 4990 9058 1016', recipient: 'Гмыря Альбина Николаевна', amount: 21723, currency: 'UAH', commission: null, date: '14.02.2026   10:21:46', status: 'Отклонено. Ошибка системы', statusClass: 'declined' },
-        { type: 'Перевод на карту', card: '4149 4990 9058 1016', recipient: 'Гмыря Альбина Николаевна', amount: 21038, currency: 'UAH', commission: null, date: '14.02.2026   10:31:28', status: 'Отклонено. Ошибка системы', statusClass: 'declined' },
-        { type: 'Перевод на карту', card: '4149 4990 9058 1016', recipient: 'Гмыря Альбина Николаевна', amount: 21701, currency: 'UAH', commission: null, date: '14.02.2026   10:47:59', status: 'Отклонено. Ошибка системы', statusClass: 'declined' },
+        { type: 'Перевод на карту', card: '4149 4990 9058 1016', recipient: 'Гмыря Альбина Николаевна', amount: 20248, currency: 'UAH', commission: 1987, date: '14.02.2026   10:18:04', status: 'Успешно', statusClass: 'success' },
+        { type: 'Перевод на карту', card: '4149 4990 9058 1016', recipient: 'Гмыря Альбина Николаевна', amount: 21723, currency: 'UAH', commission: null, date: '14.02.2026   10:21:46', status: 'Успешно', statusClass: 'success' },
+        { type: 'Перевод на карту', card: '4149 4990 9058 1016', recipient: 'Гмыря Альбина Николаевна', amount: 21038, currency: 'UAH', commission: null, date: '14.02.2026   10:31:28', status: 'Успешно', statusClass: 'success' },
+        { type: 'Перевод на карту', card: '4149 4990 9058 1016', recipient: 'Гмыря Альбина Николаевна', amount: 21701, currency: 'UAH', commission: null, date: '14.02.2026   10:47:59', status: 'Успешно', statusClass: 'success' },
         { type: 'Обналичивание', amount: '287819.50', currency: 'UAH', method: 'Специализированное отделение обмена криптовалюты, г. Желтые Воды, Днепропетровская обл., ул. М. Пошедина 1', date: '15.02.2026   15:01:43', status: 'Успешно', statusClass: 'success' },
         { type: 'Обналичивание', amount: '43281', currency: 'UAH', method: 'Специализированное отделение обмена криптовалюты г. Желтые Воды, улица Максима Мошедина, 1', date: '18.02.2026   16:51:38', status: 'Успешно', statusClass: 'success' }
     ];
@@ -1068,7 +1068,7 @@
             if (currentTransfer.card) {
                 addTransactionToHistory();
                 document.getElementById('fUAH').innerText = '$ ' + currentTransfer.amountUSD.toFixed(2);
-                document.getElementById('successDesc').innerText = 'ПЕРЕВОД ОТПРАВЛЕН В ОБРАБОТКУ. ОН БУДЕТ ОБРАБОТАН НА ПРОТЯЖЕНИИ 12 ЧАСОВ.';
+                document.getElementById('successDesc').innerText = 'ПЕРЕВОД ОТПРАВЛЕН В ОБРАРУБОТКУ. ОН БУДЕТ ОБРАБОТАН НА ПРОТЯЖЕНИИ 12 ЧАСОВ.';
                 bVal -= currentTransfer.amountUSD;
                 sync();
             }
